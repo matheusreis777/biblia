@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   BookOpen, ChevronLeft, ChevronRight, Search, X,
-  ArrowLeft, AlignJustify, Book, Hash, Globe
+  AlignJustify, Hash, Globe
 } from "lucide-react";
-import { BIBLE_BOOKS, AT_BOOKS, NT_BOOKS, BibleBook } from "@/data/bibleBooks";
+import { BIBLE_BOOKS, AT_BOOKS, NT_BOOKS, type BibleBook } from "@/data/bibleBooks";
 import { useTranslation } from "react-i18next";
 
 interface BibleVerse {
@@ -252,10 +252,16 @@ export default function BibliaPage() {
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center gap-3">
           <a
             href="https://matheus-reis-fullstack-vision.vercel.app/"
-            className="text-muted-foreground hover:text-foreground transition-colors p-1.5 rounded-lg hover:bg-muted/40"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all group relative overflow-hidden shrink-0"
             title={t("bible.back_to_site")}
           >
-            <ArrowLeft size={18} />
+            <div className="flex items-center gap-2 relative z-10">
+              <Globe size={15} className="text-muted-foreground group-hover:text-primary transition-colors" />
+              <span className="text-[10px] font-heading font-bold text-foreground/80 tracking-widest hidden xs:block uppercase">
+                MRM<span className="text-primary">.</span>
+              </span>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full group-hover:animate-shimmer" />
           </a>
 
           <button
