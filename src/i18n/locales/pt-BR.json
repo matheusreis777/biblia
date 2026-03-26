@@ -1,0 +1,200 @@
+{
+  "translation": {
+    "about": {
+      "title": "Sobre Mim",
+      "highlights_title": "Destaques",
+      "exp_years": "4+ anos",
+      "exp_desc": "Desenvolvimento .NET & Angular",
+      "db_years": "8+ anos",
+      "db_desc": "Modelagem & Banco de Dados",
+      "edu_title": "Ads",
+      "edu_desc": "Graduado",
+      "bio_intro": "Olá, sou o <1>Matheus Reis Mendonça</1>, um Desenvolvedor Fullstack Pleno focado em criar sistemas robustos, escaláveis e eficientes, atuando desde a modelagem de dados até a interface do usuário.",
+      "bio_trajectory_title": "Minha Trajetória",
+      "bio_trajectory_p1": "Com uma forte bagagem de quase uma década trabalhando com bancos de dados e mais de 4 anos dedicados ao desenvolvimento de software, adquiri uma visão profunda e sistêmica sobre como aplicações de sucesso são arquitetadas nos bastidores.",
+      "bio_trajectory_p2": "Minha principal expertise reside no backend utilizando <1>C# e a plataforma .NET</1>, a qual emprego no desenvolvimento de APIs REST escaláveis para sistemas corporativos, garantindo a performance da lógica de negócios mais complexa.",
+      "bio_work_title": "Como eu trabalho",
+      "bio_work_p1": "Acredito que o verdadeiro valor da tecnologia está em resolver problemas de negócios de maneira elegante. Meu perfil Fullstack me permite navegar sem atritos por toda a esteira de desenvolvimento do ciclo de vida da aplicação — ajudando as empresas a reduzirem ruídos de comunicação entre as barreiras de frontend e backend.",
+      "resume_title": "Currículo",
+      "resume_desc": "Minha trajetória detalhada e qualificações profissionais.",
+      "resume_btn": "Baixar Currículo",
+      "certs_title": "Certificações e Diplomas",
+      "table_doc": "Documento",
+      "table_type": "Tipo",
+      "table_issuer": "Emissor",
+      "table_action": "Ação",
+      "doc_grad": "Graduação",
+      "doc_course": "Curso"
+    },
+    "skills": {
+      "hard": {
+        "title": "Habilidades Técnicas",
+        "subtitle": "Um panorama das principais tecnologias, frameworks e ferramentas que utilizo no meu dia a dia para construir soluções eficientes.",
+        "groups": {
+          "backend": "Backend",
+          "frontend": "Frontend",
+          "mobile": "Mobile",
+          "db": "Banco de Dados",
+          "integrations": "Integrações",
+          "cloud": "Cloud & DevOps"
+        },
+        "items": {
+          "scalable_apis": "APIs REST escaláveis",
+          "complex_rules": "Regras de negócio complexas",
+          "enterprise_arch": "Arquitetura corporativa",
+          "mobile_apps": "Aplicações mobile multiplataforma",
+          "data_modeling": "Modelagem de dados",
+          "complex_queries": "Queries complexas",
+          "perf_opt": "Otimização de performance",
+          "db_rel": "Relacionamento entre tabelas",
+          "ext_apis": "APIs externas",
+          "svc_comm": "Comunicação entre serviços",
+          "auth_tokens": "Autenticação e tokens",
+          "data_flow_auto": "Automação de fluxos de dados",
+          "http_req": "Requisições HTTP",
+          "deployments": "Deployments",
+          "hosting": "Hospedagem"
+        }
+      },
+      "soft": {
+        "title": "Soft Skills",
+        "subtitle": "Competências comportamentais evoluídas ao longo dos anos para garantir o sucesso e a entrega de valor real aos projetos corporativos.",
+        "items": {
+          "problem_solving": {
+            "title": "Resolução de Problemas",
+            "desc": "Mentalidade focada em resolver problemas reais usando tecnologia. Capacidade analítica para investigar bugs complexos, entender fluxos de dados e estruturar soluções eficientes."
+          },
+          "tech_comm": {
+            "title": "Comunicação Técnica",
+            "desc": "Facilidade para traduzir problemas técnicos complexos em soluções claras para equipes e stakeholders, facilitando a tomada de decisão."
+          },
+          "systemic_thinking": {
+            "title": "Pensamento Sistêmico",
+            "desc": "Visão ampla de arquitetura de sistemas, garantindo escalabilidade e manutenção a longo prazo. Entendimento completo do fluxo da aplicação, do banco de dados à interface."
+          },
+          "analytical_capacity": {
+            "title": "Capacidade Analítica",
+            "desc": "Desenvolvida naturalmente através de anos trabalhando com backend, APIs e banco de dados. Habilidade para investigar problemas complexos e estruturar soluções eficientes."
+          },
+          "tech_adaptability": {
+            "title": "Adaptabilidade Tecnológica",
+            "desc": "Experiência com tecnologias diversas — .NET, Angular, FlutterFlow, SQL, Frontend Web — demonstrando grande capacidade de adaptação às necessidades do projeto."
+          },
+          "team_collab": {
+            "title": "Colaboração em Equipe",
+            "desc": "Experiência trabalhando em times ágeis e colaborando com desenvolvedores, designers e gestores de produto em ambientes corporativos."
+          },
+          "performance_focus": {
+            "title": "Foco em Performance",
+            "desc": "Preocupação constante com otimização de sistemas, performance de APIs, eficiência de banco de dados e otimização de queries."
+          },
+          "proactivity": {
+            "title": "Proatividade e Iniciativa",
+            "desc": "Atitude 'hands-on' na identificação de oportunidades de melhoria, propondo novas arquiteturas ou automações antes mesmo dos problemas se tornarem críticos."
+          },
+          "time_management": {
+            "title": "Gestão do Tempo",
+            "desc": "Habilidade consolidada para priorizar demandas e organizar entregas técnicas complexas mantendo um fluxo contínuo e pragmático para o negócio."
+          }
+        }
+      }
+    },
+    "exp": {
+      "title": "Experiência Técnica",
+      "subtitle": "Minhas áreas de especialidade, evidenciando domínio sólido na criação ponta a ponta de soluções corporativas complexas.",
+      "categories": {
+        "backend": "Backend & APIs",
+        "integrations": "Integrações",
+        "db": "Banco de Dados",
+        "frontend": "Frontend & Mobile"
+      },
+      "items": {
+        "net_apis": "Desenvolvimento de APIs REST escaláveis com .NET",
+        "complex_rules": "Implementação de regras de negócio complexas",
+        "robust_svcs": "Criação de serviços robustos para aplicações corporativas",
+        "microservices": "Arquitetura de microsserviços",
+        "plat_integrations": "Integração entre plataformas e sistemas",
+        "ext_apis_io": "Consumo e criação de APIs externas",
+        "svc_comm_auth": "Comunicação entre serviços com autenticação e tokens",
+        "data_flow_auto": "Automação de fluxos de dados",
+        "eff_modeling": "Modelagem de dados eficiente",
+        "complex_queries": "Criação de queries complexas",
+        "db_perf": "Otimização de performance de banco",
+        "table_rel": "Relacionamento entre tabelas",
+        "modern_web": "Aplicações web modernas com Angular",
+        "resp_interfaces": "Interfaces responsivas com JavaScript",
+        "mobile_apps": "Aplicações mobile com React Native e FlutterFlow"
+      }
+    },
+    "projects": {
+      "title": "Projetos",
+      "subtitle": "Alguns dos trabalhos que desenvolvi, utilizando tecnologias de ponta para entregar soluções escaláveis e eficientes.",
+      "items": {
+        "v4_site": {
+          "desc": "Site moderno e performático, focado em experiência do usuário e conversão."
+        },
+        "v4_crm": {
+          "desc": "Sistema de gestão de relacionamento com o cliente robusto, com integração completa de dados e regras de negócio complexas."
+        },
+        "v4_mobile": {
+          "desc": "Aplicativo mobile corporativo integrado ao CRM, facilitando o acesso a dados e gestão de clientes em tempo real.",
+          "status": "Em aprovação na Play Store"
+        },
+        "under_control": {
+          "desc": "Uma vitrine de soluções digitais de alta performance projetadas para otimizar processos e maximizar resultados.",
+          "status": "Em desenvolvimento"
+        },
+        "bible": {
+          "desc": "Leitura completa da Bíblia em português (Almeida), com todos os 66 livros, navegação por capítulos, busca de livros e versículo diário integrado ao site."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contato",
+      "subtitle": "Vamos conversar? Estou disponível para novos desafios, parcerias e oportunidades de desenvolver soluções incríveis juntos.",
+      "phone": "Telefone",
+      "email": "Email",
+      "linkedin": "LinkedIn"
+    },
+    "nav": {
+      "about": "Sobre",
+      "skills": "Skills",
+      "soft_skills": "Soft Skills",
+      "experience": "Experiência",
+      "projects": "Projetos",
+      "contact": "Contato"
+    },
+    "hero": {
+      "title_first": "Matheus Reis",
+      "title_last": "Mendonça",
+      "role": "Desenvolvedor Fullstack",
+      "description_1": "Desenvolvedor Fullstack com especialização em backend utilizando <1>.NET</1> e a linguagem <1>C#</1>, com sólida experiência no desenvolvimento de <1>APIs REST</1> escaláveis, integrações entre sistemas e aplicações corporativas.",
+      "description_2": "Atuo na construção de soluções completas, desde a modelagem e otimização de banco de dados até o desenvolvimento de interfaces modernas com <1>Angular</1>, <1>JavaScript</1> e aplicações mobile com <1>React Native</1>, sempre com foco em performance, escalabilidade e qualidade de código.",
+      "verse_copy": "Versículo copiado para a área de transferência!",
+      "story_title": "Story do Versículo Diário",
+      "btn_download": "Baixar",
+      "btn_share": "Compartilhar",
+      "btn_generating": "Gerando...",
+      "btn_contact": "Entrar em contato",
+      "btn_linkedin": "Ver LinkedIn",
+      "share_title": "Versículo Diário",
+      "share_error": "Erro ao compartilhar.",
+      "browser_not_support_share": "Seu navegador não suporta compartilhamento. Use o botão de baixar.",
+      "download_success": "Versículo baixado com sucesso!",
+      "generate_error": "Erro ao gerar imagem."
+    },
+    "bible": {
+      "title": "Bíblia Online",
+      "books": "Livros da Bíblia",
+      "old_testament": "Antigo Testamento",
+      "new_testament": "Novo Testamento",
+      "chapters": "Capítulos",
+      "search_placeholder": "Buscar livro... (ex: Salmos, Jo, Gn)",
+      "prev": "Anterior",
+      "next": "Próximo",
+      "back_to_site": "Voltar ao site",
+      "load_error": "Não foi possível carregar este capítulo. Tente novamente.",
+      "retry": "Tentar novamente"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 5.1%;
+    --foreground: 0 0% 87.8%;
+
+    --card: 0 0% 10.2%;
+    --card-foreground: 0 0% 87.8%;
+
+    --popover: 0 0% 10.2%;
+    --popover-foreground: 0 0% 87.8%;
+
+    --primary: 142 70% 45%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 10.2%;
+    --secondary-foreground: 0 0% 87.8%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 53.3%;
+
+    --accent: 142 70% 45%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 142 70% 45%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 5.1%;
+    --sidebar-foreground: 0 0% 87.8%;
+    --sidebar-primary: 142 70% 45%;
+    --sidebar-primary-foreground: 0 0% 5.1%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 87.8%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 142 70% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Subtle ambient light shift on sections */
+.section-glow {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.section-glow::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, hsl(142 70% 45% / 0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Skill hover effect */
+.skill-item {
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.skill-group:hover .skill-item {
+  opacity: 0.4;
+}
+
+.skill-group:hover .skill-item:hover {
+  opacity: 1;
+  color: hsl(142, 70%, 45%);
+}
+

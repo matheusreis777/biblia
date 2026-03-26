@@ -1,0 +1,200 @@
+{
+  "translation": {
+    "about": {
+      "title": "About Me",
+      "highlights_title": "Highlights",
+      "exp_years": "4+ years",
+      "exp_desc": ".NET & Angular Development",
+      "db_years": "8+ years",
+      "db_desc": "Modeling & Database",
+      "edu_title": "CS",
+      "edu_desc": "Graduate",
+      "bio_intro": "Hello, I am <1>Matheus Reis Mendonca</1>, a Senior Fullstack Developer focused on creating robust, scalable, and efficient systems, acting from data modeling to the user interface.",
+      "bio_trajectory_title": "My Trajectory",
+      "bio_trajectory_p1": "With a strong background of almost a decade working with databases and more than 4 years dedicated to software development, I acquired a deep and systemic view of how successful applications are architected behind the scenes.",
+      "bio_trajectory_p2": "My main expertise lies in the backend using <1>C# and the .NET platform</1>, which I employ in the development of scalable REST APIs for corporate systems, ensuring the performance of the most complex business logic.",
+      "bio_work_title": "How I Work",
+      "bio_work_p1": "I believe that the true value of technology is in solving business problems elegantly. My Fullstack profile allows me to navigate smoothly through the entire development pipeline of the application lifecycle — helping companies reduce communication noise between frontend and backend barriers.",
+      "resume_title": "Resume",
+      "resume_desc": "My detailed trajectory and professional qualifications.",
+      "resume_btn": "Download Resume",
+      "certs_title": "Certifications and Diplomas",
+      "table_doc": "Document",
+      "table_type": "Type",
+      "table_issuer": "Issuer",
+      "table_action": "Action",
+      "doc_grad": "Graduation",
+      "doc_course": "Course"
+    },
+    "skills": {
+      "hard": {
+        "title": "Technical Skills",
+        "subtitle": "An overview of the main technologies, frameworks and tools I use in my daily life to build efficient solutions.",
+        "groups": {
+          "backend": "Backend",
+          "frontend": "Frontend",
+          "mobile": "Mobile",
+          "db": "Database",
+          "integrations": "Integrations",
+          "cloud": "Cloud & DevOps"
+        },
+        "items": {
+          "scalable_apis": "Scalable REST APIs",
+          "complex_rules": "Complex business rules",
+          "enterprise_arch": "Enterprise architecture",
+          "mobile_apps": "Cross-platform mobile applications",
+          "data_modeling": "Data modeling",
+          "complex_queries": "Complex queries",
+          "perf_opt": "Performance optimization",
+          "db_rel": "Relationship between tables",
+          "ext_apis": "External APIs",
+          "svc_comm": "Communication between services",
+          "auth_tokens": "Authentication and tokens",
+          "data_flow_auto": "Data flow automation",
+          "http_req": "HTTP requests",
+          "deployments": "Deployments",
+          "hosting": "Hosting"
+        }
+      },
+      "soft": {
+        "title": "Soft Skills",
+        "subtitle": "Behavioral skills evolved over the years to ensure success and real value delivery to corporate projects.",
+        "items": {
+          "problem_solving": {
+            "title": "Problem Solving",
+            "desc": "Mindset focused on solving real problems using technology. Analytical capacity to investigate complex bugs, understand data flows, and structure efficient solutions."
+          },
+          "tech_comm": {
+            "title": "Technical Communication",
+            "desc": "Ease in translating complex technical problems into clear solutions for teams and stakeholders, facilitating decision-making."
+          },
+          "systemic_thinking": {
+            "title": "Systemic Thinking",
+            "desc": "Wide view of systems architecture, ensuring scalability and long-term maintenance. Full understanding of application flow, from database to interface."
+          },
+          "analytical_capacity": {
+            "title": "Analytical Capacity",
+            "desc": "Naturally developed through years working with backend, APIs, and databases. Ability to investigate complex problems and structure efficient solutions."
+          },
+          "tech_adaptability": {
+            "title": "Technical Adaptability",
+            "desc": "Experience with diverse technologies — .NET, Angular, FlutterFlow, SQL, Web Frontend — demonstrating great capacity to adapt to project needs."
+          },
+          "team_collab": {
+            "title": "Team Collaboration",
+            "desc": "Experience working in agile teams and collaborating with developers, designers, and product managers in corporate environments."
+          },
+          "performance_focus": {
+            "title": "Focus on Performance",
+            "desc": "Constant concern with system optimization, API performance, database efficiency, and query optimization."
+          },
+          "proactivity": {
+            "title": "Proactivity and Initiative",
+            "desc": "'Hands-on' attitude in identifying improvement opportunities, proposing new architectures or automations even before problems become critical."
+          },
+          "time_management": {
+            "title": "Time Management",
+            "desc": "Consolidated ability to prioritize demands and organize complex technical deliveries maintaining a continuous and pragmatic flow for the business."
+          }
+        }
+      }
+    },
+    "exp": {
+      "title": "Technical Experience",
+      "subtitle": "My areas of expertise, showing solid mastery in the end-to-end creation of complex corporate solutions.",
+      "categories": {
+        "backend": "Backend & APIs",
+        "integrations": "Integrations",
+        "db": "Database",
+        "frontend": "Frontend & Mobile"
+      },
+      "items": {
+        "net_apis": "Scalable REST API development with .NET",
+        "complex_rules": "Implementation of complex business rules",
+        "robust_svcs": "Creation of robust services for corporate applications",
+        "microservices": "Microservices architecture",
+        "plat_integrations": "Integration between platforms and systems",
+        "ext_apis_io": "Consumption and creation of external APIs",
+        "svc_comm_auth": "Service communication with authentication and tokens",
+        "data_flow_auto": "Data flow automation",
+        "eff_modeling": "Efficient data modeling",
+        "complex_queries": "Creation of complex queries",
+        "db_perf": "Database performance optimization",
+        "table_rel": "Table relationships",
+        "modern_web": "Modern web applications with Angular",
+        "resp_interfaces": "Responsive interfaces with JavaScript",
+        "mobile_apps": "Mobile applications with React Native and FlutterFlow"
+      }
+    },
+    "projects": {
+      "title": "Projects",
+      "subtitle": "Some of the works I developed, using cutting-edge technologies to deliver scalable and efficient solutions.",
+      "items": {
+        "v4_site": {
+          "desc": "Modern and performant site, focused on user experience and conversion."
+        },
+        "v4_crm": {
+          "desc": "Robust customer relationship management system, with full data integration and complex business rules."
+        },
+        "v4_mobile": {
+          "desc": "Corporate mobile application integrated with CRM, facilitating access to data and real-time customer management.",
+          "status": "Under approval at Play Store"
+        },
+        "under_control": {
+          "desc": "A showcase of high-performance digital solutions designed to optimize processes and maximize results.",
+          "status": "In development"
+        },
+        "bible": {
+          "desc": "Full Bible reading in Portuguese (Almeida), with all 66 books, chapter navigation, book search and daily verse integrated into the site."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact",
+      "subtitle": "Shall we talk? I am available for new challenges, partnerships, and opportunities to develop incredible solutions together.",
+      "phone": "Phone",
+      "email": "Email",
+      "linkedin": "LinkedIn"
+    },
+    "nav": {
+      "about": "About",
+      "skills": "Skills",
+      "soft_skills": "Soft Skills",
+      "experience": "Experience",
+      "projects": "Projects",
+      "contact": "Contact"
+    },
+    "hero": {
+      "title_first": "Matheus Reis",
+      "title_last": "Mendonca",
+      "role": "Fullstack Developer",
+      "description_1": "Fullstack Developer specializing in backend with <1>.NET</1> and <1>C#</1>, with solid experience in developing scalable <1>REST APIs</1>, system integrations, and enterprise applications.",
+      "description_2": "I act in building complete solutions, from database modeling and optimization to modern UI development with <1>Angular</1>, <1>JavaScript</1>, and mobile apps with <1>React Native</1>, always focusing on performance, scalability, and code quality.",
+      "verse_copy": "Verse copied to clipboard!",
+      "story_title": "Daily Verse Story",
+      "btn_download": "Download",
+      "btn_share": "Share",
+      "btn_generating": "Generating...",
+      "btn_contact": "Get in touch",
+      "btn_linkedin": "View LinkedIn",
+      "share_title": "Daily Verse",
+      "share_error": "Error sharing.",
+      "browser_not_support_share": "Your browser doesn't support sharing. Use the download button.",
+      "download_success": "Verse downloaded successfully!",
+      "generate_error": "Error generating image."
+    },
+    "bible": {
+      "title": "Online Bible",
+      "books": "Bible Books",
+      "old_testament": "Old Testament",
+      "new_testament": "New Testament",
+      "chapters": "Chapters",
+      "search_placeholder": "Search book... (e.g., Psalms, Jn, Gn)",
+      "prev": "Previous",
+      "next": "Next",
+      "back_to_site": "Back to site",
+      "load_error": "Could not load this chapter. Please try again.",
+      "retry": "Try again"
+    }
+  }
+}
