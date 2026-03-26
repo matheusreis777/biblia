@@ -251,7 +251,7 @@ export default function BibliaPage() {
       <header className="sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-border">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center gap-3">
           <a
-            href="https://matheus-reis-fullstack-vision.vercel.app/"
+            href="https://www.matheusreis.dev/"
             className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all group relative overflow-hidden shrink-0"
             title={t("bible.back_to_site")}
           >
