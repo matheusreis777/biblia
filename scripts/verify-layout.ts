@@ -69,6 +69,7 @@ for (const testCase of CASES) {
         reference: testCase.ref,
         style: STYLES[styleId],
         brandingText: "Bíblia Online",
+        siteText: "matheusreis.dev",
         durationSec: 15,
       },
       measurer,
@@ -88,11 +89,11 @@ for (const testCase of CASES) {
       ),
     );
 
-    const lowest = layout.branding
-      ? layout.branding.y + layout.branding.height
-      : layout.reference
-        ? layout.reference.y + layout.reference.height
-        : verse.y + verse.height;
+    // A assinatura e o endereço vivem FORA da área segura, de propósito (ver
+    // safeArea.ts). Quem precisa caber dentro dela é o versículo e a referência.
+    const lowest = layout.reference
+      ? layout.reference.y + layout.reference.height
+      : verse.y + verse.height;
 
     const widthOk = widest - verse.width <= 0.5;
     const topOk = verse.y >= safe.y - 0.5;

@@ -1,5 +1,6 @@
 import { FONT_FAMILIES, resolveWeight } from "./fonts.js";
-import { BRANDING_BASELINE_Y, safeBox } from "./safeArea.js";
+import { BRAND_GREEN } from "./styles.js";
+import { BRANDING_BASELINE_Y, safeBox, SITE_TOP_MARGIN } from "./safeArea.js";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
@@ -30,6 +31,15 @@ const MIN_FONT_PX = 34;
 
 /** Passo da redução automática. */
 const FONT_STEP_PX = 2;
+
+/**
+ * Quanto a marca d'água do topo é mais apagada que a assinatura do rodapé.
+ *
+ * Aplicado sobre a opacidade que o estilo já define para a assinatura, então a
+ * marca acompanha a discrição de cada preset em vez de ter um valor fixo que
+ * ficaria forte demais no Minimalista e fraco demais no Clássico.
+ */
+const WATERMARK_OPACITY_FACTOR = 0.8;
 
 interface WordMetrics {
   words: string[];
@@ -166,19 +176,16 @@ export function layoutReel(spec: ReelSpec, measurer: Measurer): LayoutResult {
   const words = tokenize(spec.verseText);
   const metrics = measureWords(words, style, verseWeight, measurer);
 
-  // Espaço que o branding reserva no rodapé da área segura.
   const brandingWeight = resolveWeight(style.branding.font, style.branding.fontWeight);
   const brandingLineHeight = style.branding.fontSizePx * 1.4;
-  // O respiro precisa ser generoso: nos estilos ancorados no rodapé, a
-  // referência encosta no limite inferior do bloco e ficaria colada no
-  // branding — dois textos pequenos em caixa alta viram um borrão só.
-  const brandingReserve = style.showBranding ? brandingLineHeight + 76 : 0;
 
   const referenceWeight = resolveWeight(style.reference.font, style.reference.fontWeight);
   const referenceText = style.showReference ? formatReference(spec.reference, style) : "";
   const referenceLineHeight = style.reference.fontSizePx * 1.3;
 
-  const availableHeight = safe.height - brandingReserve;
+  // A área segura inteira fica para o versículo e a referência: a assinatura
+  // vive no rodapé do vídeo, abaixo dela, e não disputa espaço aqui.
+  const availableHeight = safe.height;
 
   // ── Redução automática do corpo ─────────────────────────────────────────────
   // Desce de FONT_STEP em FONT_STEP até o bloco caber em altura e em número de
@@ -285,8 +292,9 @@ export function layoutReel(spec: ReelSpec, measurer: Measurer): LayoutResult {
       })()
     : null;
 
-  const branding: TextBlock | null = style.showBranding
-    ? (() => {
+  const branding: TextBlock | null =
+    style.showBranding && spec.brandingText.trim()
+      ? (() => {
         const brandingText = style.branding.uppercase
           ? spec.brandingText.toUpperCase()
           : spec.brandingText;
@@ -318,6 +326,46 @@ export function layoutReel(spec: ReelSpec, measurer: Measurer): LayoutResult {
       })()
     : null;
 
+  // ── Marca d'água do site, no topo ───────────────────────────────────────
+  // Usa a mesma configuração tipográfica da assinatura do rodapé, para os dois
+  // lerem como um par. Duas diferenças de propósito:
+  //
+  //   cor — o verde da marca é fixo e não segue o seletor de cor do texto;
+  //   opacidade — mais baixa que a da assinatura, para ficar como marca
+  //     d'água: presente para quem procura, sem competir com o versículo.
+  const site: TextBlock | null =
+    style.showBranding && spec.siteText.trim()
+      ? (() => {
+          const text = style.branding.uppercase
+            ? spec.siteText.toUpperCase()
+            : spec.siteText;
+          return {
+            lines: [text],
+            fontId: style.branding.font,
+            fontWeight: brandingWeight,
+            fontSizePx: style.branding.fontSizePx,
+            lineHeightPx: brandingLineHeight,
+            letterSpacingPx: style.branding.letterSpacingEm * style.branding.fontSizePx,
+            color: BRAND_GREEN,
+            opacity: style.branding.opacity * WATERMARK_OPACITY_FACTOR,
+            align: style.align,
+            x: safe.x,
+            y: SITE_TOP_MARGIN,
+            width: safe.width,
+            height: brandingLineHeight,
+            firstBaselineY:
+              SITE_TOP_MARGIN +
+              baselineOffset(
+                style.branding.font,
+                brandingWeight,
+                style.branding.fontSizePx,
+                brandingLineHeight,
+                measurer,
+              ),
+          };
+        })()
+      : null;
+
   return {
     width: CANVAS_WIDTH,
     height: CANVAS_HEIGHT,
@@ -325,6 +373,7 @@ export function layoutReel(spec: ReelSpec, measurer: Measurer): LayoutResult {
     verse,
     reference,
     branding,
+    site,
     notes,
   };
 }

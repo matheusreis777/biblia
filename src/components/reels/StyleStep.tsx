@@ -20,6 +20,8 @@ export function StyleStep({
   onDuration,
   brandingText,
   onBranding,
+  siteText,
+  onSite,
 }: {
   styleId: StyleId;
   overrides: StyleOverrides;
@@ -29,6 +31,8 @@ export function StyleStep({
   onDuration: (seconds: number) => void;
   brandingText: string;
   onBranding: (text: string) => void;
+  siteText: string;
+  onSite: (text: string) => void;
 }) {
   const { t, i18n } = useTranslation();
   const lang: "pt" | "en" = i18n.language.startsWith("pt") ? "pt" : "en";
@@ -213,19 +217,32 @@ export function StyleStep({
           />
         </div>
 
-        {/* Editável porque "Bíblia Online" não faz sentido num Reel de frase
-            motivacional. */}
+        {/* Editáveis porque "Bíblia Online" não faz sentido num Reel de frase
+            motivacional. O endereço vai no topo, na cor da marca. */}
         {showBranding && (
-          <label className="block space-y-2">
-            <FieldLabel>{t("reels.custom_branding_text")}</FieldLabel>
-            <input
-              value={brandingText}
-              onChange={(e) => onBranding(e.target.value)}
-              maxLength={40}
-              placeholder={t("reels.custom_branding_placeholder")}
-              className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors font-body"
-            />
-          </label>
+          <div className="space-y-3">
+            <label className="block space-y-2">
+              <FieldLabel>{t("reels.custom_branding_text")}</FieldLabel>
+              <input
+                value={brandingText}
+                onChange={(e) => onBranding(e.target.value)}
+                maxLength={40}
+                placeholder={t("reels.custom_branding_placeholder")}
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors font-body"
+              />
+            </label>
+
+            <label className="block space-y-2">
+              <FieldLabel>{t("reels.custom_site_text")}</FieldLabel>
+              <input
+                value={siteText}
+                onChange={(e) => onSite(e.target.value)}
+                maxLength={40}
+                placeholder={t("reels.custom_site_placeholder")}
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-primary placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors font-body"
+              />
+            </label>
+          </div>
         )}
       </div>
     </div>

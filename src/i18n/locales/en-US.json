@@ -301,7 +301,9 @@
       "quote_manual_placeholder": "Write or paste the quote here.",
       "quote_manual_author": "Author (optional)",
       "custom_branding_text": "Signature text",
-      "custom_branding_placeholder": "e.g. Bíblia Online"
+      "custom_branding_placeholder": "e.g. Bíblia Online",
+      "custom_site_text": "Address at the top",
+      "custom_site_placeholder": "e.g. matheusreis.dev"
     }
   }
 }

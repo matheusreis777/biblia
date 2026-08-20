@@ -91,6 +91,23 @@ uma aproximação. Isso vem de três decisões que precisam ser mantidas juntas:
    em PNG e o FFmpeg sobrepõe. `drawtext` não quebra linha, não controla tracking e não
    desenha sombra decente — o resultado teria cara de template automático.
 
+### Assinatura e marca d'água
+
+A composição tem dois elementos de marca, ambos **fora da área segura** de propósito:
+
+| Elemento | Onde | Texto padrão |
+|---|---|---|
+| Assinatura | rodapé do vídeo, 96px da borda | `Bíblia Online` no modo Versículo, `Under Control` no modo Frase |
+| Marca d'água | topo do vídeo, 96px da borda | `matheusreis.dev`, no verde da marca e mais apagada |
+
+Os dois ficam nas faixas onde Instagram, TikTok e Shorts desenham a própria interface,
+então podem aparecer parcialmente encobertos **dentro do app** — no arquivo e em qualquer
+player normal aparecem inteiros. A troca é consciente: são elementos secundários, e
+mantê-los nas bordas devolve a área segura inteira para o versículo.
+
+O verde é o token `--primary` do site (`hsl(142 70% 45%)` = `#22C35D`) e é fixo: não segue
+o seletor de cor do texto, porque é a marca. Os dois textos são editáveis no passo 4.
+
 As fontes de `public/fonts/` são instâncias estáticas geradas por
 `scripts/prepare-fonts.py`, com **um nome de família único por peso**
 (`ReelInter500`, `ReelPlayfair600`, …). Sem isso, as três instâncias do Inter sairiam

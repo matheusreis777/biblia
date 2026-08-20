@@ -36,14 +36,25 @@ import type { LayoutResult, ReelVideo, StyleId, ThemeId } from "@/reels/types";
 // servidor rasteriza para dentro do vídeo, com as mesmas fontes e coordenadas.
 // Ver src/components/reels/PhonePreview.tsx.
 
-const DEFAULT_BRANDING = "Bíblia Online";
+/** Assinatura do rodapé, por tipo de conteúdo. */
+const DEFAULT_BRANDING: Record<ContentType, string> = {
+  verse: "Bíblia Online",
+  quote: "Under Control",
+};
+
+const DEFAULT_SITE = "matheusreis.dev";
 const DEFAULT_DURATION_SEC = 15;
 
 export default function ReelsPage() {
   const { t, i18n } = useTranslation();
 
   const [contentType, setContentType] = useState<ContentType>("verse");
-  const [brandingText, setBrandingText] = useState(DEFAULT_BRANDING);
+  // A assinatura acompanha o tipo de conteúdo, mas uma edição manual vence e
+  // sobrevive à troca de aba. Derivado em vez de sincronizado por efeito, pelo
+  // mesmo motivo do tema: setState dentro de efeito dispara renderização em
+  // cascata.
+  const [brandingEdit, setBrandingEdit] = useState<string | null>(null);
+  const [siteText, setSiteText] = useState(DEFAULT_SITE);
   const [verse, setVerse] = useState<Verse | null>(null);
   const [video, setVideo] = useState<ReelVideo | null>(null);
   const [styleId, setStyleId] = useState<StyleId>("classic");
@@ -112,6 +123,8 @@ export default function ReelsPage() {
 
   const quotes = useQuotes(quoteTheme, i18n.language, contentType === "quote");
 
+  const brandingText = brandingEdit ?? DEFAULT_BRANDING[contentType];
+
   const patchOverrides = useCallback((patch: StyleOverrides) => {
     setOverrides((prev) => ({ ...prev, ...patch }));
   }, []);
@@ -170,11 +183,12 @@ export default function ReelsPage() {
         reference: verse.reference,
         style: applyOverrides(STYLES[styleId], overrides),
         brandingText,
+        siteText,
         durationSec,
       },
       measurer,
     );
-  }, [measurer, verse, styleId, overrides, durationSec, brandingText]);
+  }, [measurer, verse, styleId, overrides, durationSec, brandingText, siteText]);
 
   const tooLong = layout?.notes.some((n) => n.kind === "textTooLong") ?? false;
   const canGenerate = Boolean(layout && video) && render.phase !== "running";
@@ -189,6 +203,7 @@ export default function ReelsPage() {
       video: { downloadUrl: video.downloadUrl, previewUrl: video.previewUrl },
       durationSec,
       brandingText,
+      siteText,
       motion: true,
       language: i18n.language,
       contentType,
@@ -310,7 +325,9 @@ export default function ReelsPage() {
                 onOverrides={patchOverrides}
                 onDuration={setDurationSec}
                 brandingText={brandingText}
-                onBranding={setBrandingText}
+                onBranding={setBrandingEdit}
+                siteText={siteText}
+                onSite={setSiteText}
               />
             </Step>
 

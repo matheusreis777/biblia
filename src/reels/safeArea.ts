@@ -45,10 +45,36 @@ export function safeBox(): SafeBox {
 }
 
 /**
- * Baseline do branding: encostado na borda de baixo da área segura, logo acima
- * de onde as plataformas começam a desenhar a legenda.
+ * Distância entre a assinatura e a borda de baixo do vídeo.
+ *
+ * Igual à margem lateral da área segura, para a assinatura ficar opticamente
+ * alinhada com o resto da composição.
  */
-export const BRANDING_BASELINE_Y = CANVAS_HEIGHT - SAFE_AREA.bottom - 24;
+export const BRANDING_BOTTOM_MARGIN = 96;
+
+/**
+ * Distância entre o topo do vídeo e o endereço do site.
+ *
+ * Mesmo valor da margem de baixo, para os dois elementos ficarem simétricos.
+ * Vale a mesma ressalva do rodapé: os 210px de cima são onde as plataformas
+ * desenham a barra de status e a navegação, então este texto pode ficar
+ * parcialmente encoberto dentro do app.
+ */
+export const SITE_TOP_MARGIN = 96;
+
+/**
+ * Baseline da assinatura: no rodapé do VÍDEO, não da área segura.
+ *
+ * Isto é deliberado e tem um custo: os 400px de baixo são onde Instagram,
+ * TikTok e Shorts desenham legenda, @usuário e barra de áudio, então a
+ * assinatura pode ficar parcialmente encoberta na visualização dentro do app.
+ * Ela continua no arquivo, e aparece inteira em qualquer player normal.
+ *
+ * A troca é consciente: assinatura é elemento secundário, e mantê-la colada na
+ * base deixa a composição do versículo respirar. O versículo e a referência
+ * continuam integralmente dentro da área segura — ver layoutReel().
+ */
+export const BRANDING_BASELINE_Y = CANVAS_HEIGHT - BRANDING_BOTTOM_MARGIN;
 
 /** true se a caixa informada cabe inteira na área segura. */
 export function isWithinSafeArea(box: SafeBox): boolean {

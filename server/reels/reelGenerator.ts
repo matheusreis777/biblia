@@ -53,6 +53,8 @@ export interface GenerateRequest {
   };
   durationSec?: number;
   brandingText?: string;
+  /** Endereço exibido no topo do vídeo, na cor da marca. */
+  siteText?: string;
   motion?: boolean;
   narration?: NarrationRequest;
   music?: {
@@ -78,6 +80,7 @@ interface ValidatedRequest {
   previewUrl: string | null;
   durationSec: number;
   brandingText: string;
+  siteText: string;
   motion: boolean;
   narration: Required<NarrationRequest>;
   musicUrl: string | null;
@@ -128,6 +131,7 @@ export function validate(request: GenerateRequest): ValidatedRequest {
       MAX_DURATION_SEC,
     ),
     brandingText: String(request.brandingText ?? "Bíblia Online").trim().slice(0, 40),
+    siteText: String(request.siteText ?? "").trim().slice(0, 40),
     motion: request.motion !== false,
     narration: {
       // Narração é opt-in: sem o campo, o vídeo sai mudo como antes.
@@ -218,6 +222,7 @@ export async function generateReel(
       reference: input.reference,
       style,
       brandingText: input.brandingText,
+      siteText: input.siteText,
       durationSec: input.durationSec,
     },
     serverMeasurer(),

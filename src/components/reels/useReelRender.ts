@@ -15,6 +15,7 @@ export interface RenderRequestBody {
   video: { downloadUrl: string; previewUrl?: string };
   durationSec: number;
   brandingText: string;
+  siteText: string;
   motion: boolean;
   /** Tag BCP-47; decide como a referência é lida em voz alta. */
   language?: string;

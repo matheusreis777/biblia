@@ -150,7 +150,10 @@ export interface ReelSpec {
   verseText: string;
   reference: string;
   style: ReelStyle;
+  /** Assinatura no rodapé do vídeo. */
   brandingText: string;
+  /** Endereço no topo do vídeo, na cor da marca. */
+  siteText: string;
   durationSec: number;
 }
 
@@ -181,7 +184,10 @@ export interface LayoutResult {
   scrim: ScrimSpec;
   verse: TextBlock;
   reference: TextBlock | null;
+  /** Assinatura no rodapé. */
   branding: TextBlock | null;
+  /** Endereço no topo. */
+  site: TextBlock | null;
   /** Ajustes que o motor precisou fazer — úteis para avisar na interface. */
   notes: LayoutNote[];
 }

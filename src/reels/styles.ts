@@ -7,6 +7,15 @@ import type { FontId, ReelStyle, ScrimKind, StyleId, TextAnchor } from "./types.
 
 const WHITE = "#FFFFFF";
 
+/**
+ * O verde da identidade do site — mesmo valor do token `--primary` em
+ * src/index.css (`hsl(142 70% 45%)`), convertido para hex porque o SVG e o
+ * FFmpeg não leem variáveis CSS.
+ *
+ * Fixo de propósito: é a marca, e não deve mudar com o seletor de cor do texto.
+ */
+export const BRAND_GREEN = "#22C35D";
+
 export const STYLES: Record<StyleId, ReelStyle> = {
   // ── 1. Clássico ─────────────────────────────────────────────────────────────
   // Composição central, escurecimento uniforme. É o mais seguro: funciona com

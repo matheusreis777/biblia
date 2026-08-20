@@ -196,6 +196,14 @@ export function PhonePreview({
               rise={false}
             />
           )}
+          {layout.site && (
+            <TextLayer
+              block={layout.site}
+              delay={TIMING.metaStart}
+              duration={TIMING.metaFade}
+              rise={false}
+            />
+          )}
         </div>
 
         {showSafeArea && (

@@ -170,7 +170,7 @@ export function renderLayers(layout: LayoutResult): ReelLayers {
     `<defs>${shadowFilter("vs", layout.verse.fontSizePx)}</defs>` + textBody(layout.verse, "vs"),
   );
 
-  const metaBlocks = [layout.reference, layout.branding].filter(
+  const metaBlocks = [layout.reference, layout.branding, layout.site].filter(
     (b): b is TextBlock => b !== null,
   );
 
