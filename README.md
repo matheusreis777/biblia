@@ -193,8 +193,17 @@ Duas implementações de `VideoRenderService`, escolhidas automaticamente:
 
 - **`LocalFfmpegRenderService`** — o FFmpeg instalado na máquina. Sem timeout, então usa
   `-preset slow -crf 20`. É o caminho de qualidade máxima.
-- **`BundledFfmpegRenderService`** — `ffmpeg-static`, para o site publicado. Usa
-  `-preset veryfast -crf 24` para caber no tempo da função.
+- **`BundledFfmpegRenderService`** — `ffmpeg-static`, para o site publicado.
+
+**O perfil serverless é bem mais enxuto, e isso foi medido, não estimado:** com
+1080x1920 a 30fps, preset `veryfast` e zoom ligado, a função **estourou os 60s** em
+produção. O perfil atual — 720x1280, 24fps, `ultrafast`, sem zoom — é 4,4x mais rápido
+(7,7s contra 33,7s na mesma máquina) e cabe no limite. A composição é idêntica; muda a
+resolução e o movimento de fundo.
+
+Se a conta for **Pro**, subir `maxDuration` para 300 em `vercel.json` permite devolver o
+perfil serverless para perto do local — é só ajustar `SERVERLESS_PROFILE` em
+`server/reels/render/types.ts`.
 
 ## Configuração
 

@@ -42,8 +42,20 @@ function inputIndexes(job: RenderJob) {
   return { background, scrim, verse, meta, narration, music };
 }
 
+/** Resolução de saída, reduzida pelo perfil quando o ambiente exige. */
+export function outputSize(job: RenderJob, profile: EncodeProfile) {
+  if (job.height <= profile.maxHeight) return { width: job.width, height: job.height };
+  const scale = profile.maxHeight / job.height;
+  // Par em ambas as dimensões: o yuv420p exige, e um valor ímpar faz o
+  // encoder falhar.
+  const even = (n: number) => Math.round(n / 2) * 2;
+  return { width: even(job.width * scale), height: even(job.height * scale) };
+}
+
 function buildFilterGraph(job: RenderJob, profile: EncodeProfile): string {
-  const { width, height, durationSec, motion } = job;
+  const { durationSec } = job;
+  const { width, height } = outputSize(job, profile);
+  const motion = job.motion && profile.allowMotion;
   const fps = profile.fps;
   const totalFrames = Math.max(1, Math.round(durationSec * fps));
 
@@ -73,22 +85,29 @@ function buildFilterGraph(job: RenderJob, profile: EncodeProfile): string {
   const input = inputIndexes(job);
   const parts: string[] = [`[${input.background}:v]${background.join(",")}[bg]`];
 
+  // As camadas de texto são rasterizadas sempre em 1080x1920 (é o canvas do
+  // motor de layout). Quando o perfil reduz a saída, elas acompanham — senão
+  // o overlay ficaria maior que o fundo.
+  const fit = width === job.width ? "" : `scale=${width}:${height},`;
+
   parts.push(
-    `[${input.scrim}:v]format=rgba,fade=t=in:st=0:d=${TIMING.scrimFadeIn}:alpha=1[scrim]`,
-    `[${input.verse}:v]format=rgba,fade=t=in:st=${TIMING.verseStart}:d=${TIMING.verseFade}:alpha=1[verse]`,
+    `[${input.scrim}:v]format=rgba,${fit}fade=t=in:st=0:d=${TIMING.scrimFadeIn}:alpha=1[scrim]`,
+    `[${input.verse}:v]format=rgba,${fit}fade=t=in:st=${TIMING.verseStart}:d=${TIMING.verseFade}:alpha=1[verse]`,
   );
 
   parts.push(`[bg][scrim]overlay=0:0[withScrim]`);
 
   // O versículo sobe enquanto aparece: y vai de verseRisePx até 0 ao longo do
   // fade. `max(0,...)` evita valor negativo antes do início da animação.
+  // O deslocamento é em px do canvas 1080x1920; escala junto com a saída.
+  const risePx = Math.round(TIMING.verseRisePx * (width / job.width));
   const riseExpr =
-    `'${TIMING.verseRisePx}*(1-min(1,max(0,(t-${TIMING.verseStart})/${TIMING.verseFade})))'`;
+    `'${risePx}*(1-min(1,max(0,(t-${TIMING.verseStart})/${TIMING.verseFade})))'`;
   parts.push(`[withScrim][verse]overlay=0:${riseExpr}[withVerse]`);
 
   if (input.meta !== null) {
     parts.push(
-      `[${input.meta}:v]format=rgba,fade=t=in:st=${TIMING.metaStart}:d=${TIMING.metaFade}:alpha=1[meta]`,
+      `[${input.meta}:v]format=rgba,${fit}fade=t=in:st=${TIMING.metaStart}:d=${TIMING.metaFade}:alpha=1[meta]`,
       `[withVerse][meta]overlay=0:0[out]`,
     );
   } else {
