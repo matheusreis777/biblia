@@ -1,11 +1,11 @@
-import type { ReelVideo } from "../../../src/reels/types";
+import type { ReelVideo } from "../../../src/reels/types.js";
 import {
   pickPreviewFile,
   pickRenderFile,
   type ProviderFile,
   type SearchOptions,
   type VideoProvider,
-} from "./types";
+} from "./types.js";
 
 // ─── Pixabay ──────────────────────────────────────────────────────────────────
 // https://pixabay.com/api/docs/#api_search_videos

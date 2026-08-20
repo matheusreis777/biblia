@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { MAX_NARRATION_CHARS, resolveNarration } from "../../server/reels/tts";
-import { narrationText } from "../../server/reels/narrationText";
+import { MAX_NARRATION_CHARS, resolveNarration } from "../../server/reels/tts/index.js";
+import { narrationText } from "../../server/reels/narrationText.js";
 
 // ─── POST /api/reels/narration ────────────────────────────────────────────────
 // Sintetiza a narração e devolve o áudio direto no corpo da resposta.

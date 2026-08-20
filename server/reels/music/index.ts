@@ -1,11 +1,11 @@
-import { LocalMusicProvider, resolveLocalTrackPath } from "./local";
+import { LocalMusicProvider, resolveLocalTrackPath } from "./local.js";
 import {
   MIN_TRACK_DURATION_SEC,
   MOOD_QUERIES,
   type Mood,
   type MusicProvider,
   type MusicTrack,
-} from "./types";
+} from "./types.js";
 
 // ─── Provedores de trilha ─────────────────────────────────────────────────────
 // Hoje há só um: os arquivos que você põe em public/music/.
@@ -110,4 +110,4 @@ export function isAllowedMusicUrl(rawUrl: string): boolean {
 }
 
 export { resolveLocalTrackPath };
-export { isMood, MOODS, type Mood, type MusicTrack } from "./types";
+export { isMood, MOODS, type Mood, type MusicTrack } from "./types.js";

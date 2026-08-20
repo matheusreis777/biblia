@@ -1,4 +1,4 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./types";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./types.js";
 
 // ─── Área segura ──────────────────────────────────────────────────────────────
 // Instagram, TikTok e YouTube Shorts desenham a própria interface por cima do

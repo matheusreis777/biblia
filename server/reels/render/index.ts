@@ -1,6 +1,6 @@
-import { BundledFfmpegRenderService } from "./bundled";
-import { LocalFfmpegRenderService } from "./local";
-import type { VideoRenderService } from "./types";
+import { BundledFfmpegRenderService } from "./bundled.js";
+import { LocalFfmpegRenderService } from "./local.js";
+import type { VideoRenderService } from "./types.js";
 
 // ─── Seleção do render ────────────────────────────────────────────────────────
 // O FFmpeg do sistema vem primeiro: quando existe (máquina de desenvolvimento),
@@ -38,4 +38,4 @@ export async function resolveRenderService(): Promise<VideoRenderService> {
   );
 }
 
-export type { VideoRenderService } from "./types";
+export type { VideoRenderService } from "./types.js";

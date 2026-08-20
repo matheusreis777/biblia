@@ -1,10 +1,10 @@
-import type { ThemeId } from "../../../src/reels/types";
+import type { ThemeId } from "../../../src/reels/types.js";
 import type {
   Quote,
   QuoteLanguage,
   QuoteProvider,
   QuoteSearchOptions,
-} from "./types";
+} from "./types.js";
 
 // ─── Biblioteca curada ────────────────────────────────────────────────────────
 // Única fonte de frases em PORTUGUÊS: nenhuma API pública tem acervo em pt-BR

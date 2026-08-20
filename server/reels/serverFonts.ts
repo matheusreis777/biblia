@@ -1,9 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { FONT_VARIANTS } from "../../src/reels/fonts";
-import { createMeasurer, fontKey } from "../../src/reels/measure";
-import { parse, toArrayBuffer, type Font } from "../../src/reels/opentypeCompat";
-import type { Measurer } from "../../src/reels/types";
+import { FONT_VARIANTS } from "../../src/reels/fonts.js";
+import { createMeasurer, fontKey } from "../../src/reels/measure.js";
+import { parse, toArrayBuffer, type Font } from "../../src/reels/opentypeCompat.js";
+import type { Measurer } from "../../src/reels/types.js";
 
 // ─── Fontes no servidor ───────────────────────────────────────────────────────
 // Lê os mesmos .ttf que o browser baixa de /fonts. Precisam ser exatamente os

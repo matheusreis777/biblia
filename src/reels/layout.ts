@@ -1,5 +1,5 @@
-import { FONT_FAMILIES, resolveWeight } from "./fonts";
-import { BRANDING_BASELINE_Y, safeBox } from "./safeArea";
+import { FONT_FAMILIES, resolveWeight } from "./fonts.js";
+import { BRANDING_BASELINE_Y, safeBox } from "./safeArea.js";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
@@ -9,7 +9,7 @@ import {
   type ReelSpec,
   type ReelStyle,
   type TextBlock,
-} from "./types";
+} from "./types.js";
 
 // ─── Motor de layout ──────────────────────────────────────────────────────────
 // Roda igual no browser (preview) e no servidor (rasterização para o vídeo).

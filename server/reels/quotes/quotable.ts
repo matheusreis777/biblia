@@ -6,7 +6,7 @@ import {
   type QuoteLanguage,
   type QuoteProvider,
   type QuoteSearchOptions,
-} from "./types";
+} from "./types.js";
 
 // ─── Quotable (espelho da comunidade) ─────────────────────────────────────────
 // O Quotable original (api.quotable.io) está fora do ar — a conexão nem

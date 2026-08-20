@@ -1,4 +1,4 @@
-import type { ThemeId } from "../../../src/reels/types";
+import type { ThemeId } from "../../../src/reels/types.js";
 
 // ─── Contrato dos provedores de frase ─────────────────────────────────────────
 // Mesmo formato dos provedores de vídeo e de voz: interface, implementações, e

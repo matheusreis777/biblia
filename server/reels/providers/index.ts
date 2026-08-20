@@ -1,9 +1,9 @@
-import { getTheme, isThemeId } from "../../../src/reels/themes";
-import type { ReelVideo, ThemeId } from "../../../src/reels/types";
-import { InternalVideoProvider } from "./internal";
-import { PEXELS_DOWNLOAD_HOSTS, PexelsVideoProvider } from "./pexels";
-import { PIXABAY_DOWNLOAD_HOSTS, PixabayVideoProvider } from "./pixabay";
-import { isUsable, rankVideos, type SearchOptions, type VideoProvider } from "./types";
+import { getTheme, isThemeId } from "../../../src/reels/themes.js";
+import type { ReelVideo, ThemeId } from "../../../src/reels/types.js";
+import { InternalVideoProvider } from "./internal.js";
+import { PEXELS_DOWNLOAD_HOSTS, PexelsVideoProvider } from "./pexels.js";
+import { PIXABAY_DOWNLOAD_HOSTS, PixabayVideoProvider } from "./pixabay.js";
+import { isUsable, rankVideos, type SearchOptions, type VideoProvider } from "./types.js";
 
 // ─── Cadeia de fallback ───────────────────────────────────────────────────────
 // Ordem: Pexels → Pixabay → biblioteca interna.

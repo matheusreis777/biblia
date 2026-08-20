@@ -1,4 +1,4 @@
-import type { ThemeId, VerseTheme } from "./types";
+import type { ThemeId, VerseTheme } from "./types.js";
 
 // ─── Temas ────────────────────────────────────────────────────────────────────
 // `queries` são enviadas aos provedores em inglês (é onde Pexels e Pixabay têm

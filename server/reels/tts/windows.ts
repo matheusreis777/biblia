@@ -3,7 +3,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import type { NarrationResult, TtsProvider, TtsVoice } from "./types";
+import type { NarrationResult, TtsProvider, TtsVoice } from "./types.js";
 
 // ─── Voz local do Windows ─────────────────────────────────────────────────────
 // Queda para quando o serviço do Edge falha. Usa o System.Speech do .NET

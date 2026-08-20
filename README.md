@@ -15,6 +15,7 @@ npm run dev
 | `npm run build` | `tsc -b` em todos os projetos, depois o build do Vite |
 | `npm run lint` | ESLint |
 | `npm run verify:layout` | Verifica o motor de layout dos Reels e gera PNGs para inspeção |
+| `npm run verify:api` | Confere que as funções de `api/` carregam no runtime da Vercel |
 | `npm run fonts` | Regera as fontes de `public/fonts/` (precisa de Python + fontTools) |
 
 ## Estrutura
@@ -35,6 +36,27 @@ scripts/        preparação de fontes e verificação de layout
 public/fonts/   fontes do gerador de Reels
 public/music/   suas trilhas de fundo (não versionadas, pasta nasce vazia)
 ```
+
+### Imports relativos precisam de extensão `.js`
+
+Em `api/`, `server/` e `src/reels/`, **todo import relativo tem que terminar em `.js`** e
+apontar para um arquivo — nunca para uma pasta (`./providers` não resolve; use
+`./providers/index.js`).
+
+Não é estilo, é o que faz o deploy funcionar. O `package.json` tem `"type": "module"`, e o
+builder da Vercel usa isso para tratar nossos `.ts` como ESM:
+
+```js
+const isEsm = ext === ".mjs" || ext === ".mts" ||
+              pkg.type === "module" && [".js",".ts",".tsx"].includes(ext);
+```
+
+Ele compila cada arquivo para `.js` mas **não reescreve os especificadores**. Sob ESM o
+Node exige extensão explícita e não faz resolução de diretório. Sem isso, o build passa,
+o deploy é publicado e **todas** as rotas devolvem `FUNCTION_INVOCATION_FAILED` — foi
+exatamente o que aconteceu. `npm run verify:api` reproduz essas condições e é a única
+verificação que pega esse erro; nem `tsc`, nem `vite build`, nem o dev server pegam,
+porque em desenvolvimento o Vite resolve os imports com o próprio resolvedor.
 
 `api/` contém apenas rotas. Tudo o que elas usam em comum vive em `server/`, porque a
 Vercel transforma **cada** arquivo de `api/` numa função — um módulo compartilhado ali

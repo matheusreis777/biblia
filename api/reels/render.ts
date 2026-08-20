@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-import type { RenderProgress } from "../../src/reels/types";
-import { generateReel, validate, ValidationError } from "../../server/reels/reelGenerator";
-import { resolveRenderService } from "../../server/reels/render";
+import type { RenderProgress } from "../../src/reels/types.js";
+import { generateReel, validate, ValidationError } from "../../server/reels/reelGenerator.js";
+import { resolveRenderService } from "../../server/reels/render/index.js";
 
 // ─── POST /api/reels/render ───────────────────────────────────────────────────
 // Responde em NDJSON streamado — uma linha JSON por evento:

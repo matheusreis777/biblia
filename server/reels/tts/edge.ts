@@ -5,7 +5,7 @@ import {
   type NarrationResult,
   type TtsProvider,
   type TtsVoice,
-} from "./types";
+} from "./types.js";
 
 // ─── Vozes neurais do Edge ────────────────────────────────────────────────────
 // Usa o mesmo serviço por trás do "Ler em voz alta" do Microsoft Edge, através

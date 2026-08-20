@@ -1,9 +1,9 @@
 import { existsSync } from "node:fs";
 import ffmpegStatic from "ffmpeg-static";
 
-import type { RenderProgress } from "../../../src/reels/types";
-import { runFfmpeg } from "./ffmpeg";
-import { SERVERLESS_PROFILE, type RenderJob, type VideoRenderService } from "./types";
+import type { RenderProgress } from "../../../src/reels/types.js";
+import { runFfmpeg } from "./ffmpeg.js";
+import { SERVERLESS_PROFILE, type RenderJob, type VideoRenderService } from "./types.js";
 
 // ─── Render serverless ────────────────────────────────────────────────────────
 // Usa o binário que vem no pacote ffmpeg-static, para o site publicado na

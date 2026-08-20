@@ -1,4 +1,4 @@
-import type { FontId, ReelStyle, ScrimKind, StyleId, TextAnchor } from "./types";
+import type { FontId, ReelStyle, ScrimKind, StyleId, TextAnchor } from "./types.js";
 
 // ─── Estilos prontos ──────────────────────────────────────────────────────────
 // Todos os tamanhos estão em px do canvas 1080x1920. O motor de layout reduz a

@@ -1,8 +1,8 @@
 import { spawn } from "node:child_process";
 
-import type { RenderProgress } from "../../../src/reels/types";
-import { runFfmpeg } from "./ffmpeg";
-import { LOCAL_PROFILE, type RenderJob, type VideoRenderService } from "./types";
+import type { RenderProgress } from "../../../src/reels/types.js";
+import { runFfmpeg } from "./ffmpeg.js";
+import { LOCAL_PROFILE, type RenderJob, type VideoRenderService } from "./types.js";
 
 // ─── Render local ─────────────────────────────────────────────────────────────
 // Usa o FFmpeg instalado na máquina. É o caminho de qualidade máxima: sem

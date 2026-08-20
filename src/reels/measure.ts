@@ -1,6 +1,6 @@
-import { parse, type Font } from "./opentypeCompat";
-import { FONT_VARIANTS, fontUrl, resolveWeight } from "./fonts";
-import type { FontId, FontMetrics, Measurer } from "./types";
+import { parse, type Font } from "./opentypeCompat.js";
+import { FONT_VARIANTS, fontUrl, resolveWeight } from "./fonts.js";
+import type { FontId, FontMetrics, Measurer } from "./types.js";
 
 // ─── Medição de texto ─────────────────────────────────────────────────────────
 // A quebra de linha precisa dar o MESMO resultado no browser e no servidor.

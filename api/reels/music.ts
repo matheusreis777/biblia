@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { isMood, MOODS, resolveMusic } from "../../server/reels/music";
+import { isMood, MOODS, resolveMusic } from "../../server/reels/music/index.js";
 
 // ─── GET /api/reels/music ─────────────────────────────────────────────────────
 // Trilhas para um clima. Mesma forma de /api/reels/videos.

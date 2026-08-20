@@ -1,6 +1,6 @@
-import type { ReelVideo, ThemeId } from "../../../src/reels/types";
-import { isThemeId } from "../../../src/reels/themes";
-import type { SearchOptions, VideoProvider } from "./types";
+import type { ReelVideo, ThemeId } from "../../../src/reels/types.js";
+import { isThemeId } from "../../../src/reels/themes.js";
+import type { SearchOptions, VideoProvider } from "./types.js";
 
 // ─── Biblioteca interna ───────────────────────────────────────────────────────
 // Último elo da cadeia de fallback: entra quando nenhuma chave de API está

@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { isThemeId } from "../../src/reels/themes";
-import { MIN_DURATION_SEC } from "../../server/reels/providers/types";
-import { resolveVideos } from "../../server/reels/providers";
+import { isThemeId } from "../../src/reels/themes.js";
+import { MIN_DURATION_SEC } from "../../server/reels/providers/types.js";
+import { resolveVideos } from "../../server/reels/providers/index.js";
 
 // ─── GET /api/reels/videos ────────────────────────────────────────────────────
 // Busca clipes verticais para um tema. As chaves das APIs ficam só aqui, no

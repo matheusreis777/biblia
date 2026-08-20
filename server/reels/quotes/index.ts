@@ -1,12 +1,12 @@
-import { InternalQuoteProvider } from "./internal";
-import { QuotableQuoteProvider } from "./quotable";
+import { InternalQuoteProvider } from "./internal.js";
+import { QuotableQuoteProvider } from "./quotable.js";
 import {
   isUsableQuote,
   type Quote,
   type QuoteLanguage,
   type QuoteProvider,
   type QuoteSearchOptions,
-} from "./types";
+} from "./types.js";
 
 // ─── Cadeia de fallback das frases ────────────────────────────────────────────
 // Ordem: Quotable (espelho, só inglês) → biblioteca interna.
@@ -78,4 +78,4 @@ export function toQuoteLanguage(language: string): QuoteLanguage {
   return language.startsWith("pt") ? "pt-BR" : "en-US";
 }
 
-export type { Quote, QuoteLanguage } from "./types";
+export type { Quote, QuoteLanguage } from "./types.js";

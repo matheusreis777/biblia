@@ -1,5 +1,5 @@
-import { fontFamilyName } from "./fonts";
-import type { LayoutResult, ScrimSpec, TextBlock } from "./types";
+import { fontFamilyName } from "./fonts.js";
+import type { LayoutResult, ScrimSpec, TextBlock } from "./types.js";
 
 // ─── Camadas em SVG ───────────────────────────────────────────────────────────
 // O servidor rasteriza estes SVGs em PNG (resvg) e o FFmpeg os sobrepõe ao

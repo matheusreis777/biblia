@@ -1,4 +1,4 @@
-import type { FontId } from "./types";
+import type { FontId } from "./types.js";
 
 // ─── Registro de fontes ───────────────────────────────────────────────────────
 // Os arquivos são gerados por scripts/prepare-fonts.py (instância estática +

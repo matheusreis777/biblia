@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { availableVoices, DEFAULT_RATE, MAX_RATE, MIN_RATE } from "../../server/reels/tts";
+import { availableVoices, DEFAULT_RATE, MAX_RATE, MIN_RATE } from "../../server/reels/tts/index.js";
 
 // ─── GET /api/reels/voices ────────────────────────────────────────────────────
 // Vozes utilizáveis NESTE ambiente.

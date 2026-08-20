@@ -1,6 +1,6 @@
-import { EdgeTtsProvider } from "./edge";
-import { clampRate, type NarrationResult, type TtsProvider, type TtsVoice } from "./types";
-import { WindowsTtsProvider } from "./windows";
+import { EdgeTtsProvider } from "./edge.js";
+import { clampRate, type NarrationResult, type TtsProvider, type TtsVoice } from "./types.js";
+import { WindowsTtsProvider } from "./windows.js";
 
 // ─── Cadeia de fallback da voz ────────────────────────────────────────────────
 // Ordem: Edge (neural) → Windows (local) → nenhum.
@@ -106,5 +106,5 @@ function matchLanguage(
   return provider.voices().find((v) => v.language === language);
 }
 
-export type { NarrationResult, TtsVoice } from "./types";
-export { clampRate, DEFAULT_RATE, MAX_RATE, MIN_RATE } from "./types";
+export type { NarrationResult, TtsVoice } from "./types.js";
+export { clampRate, DEFAULT_RATE, MAX_RATE, MIN_RATE } from "./types.js";

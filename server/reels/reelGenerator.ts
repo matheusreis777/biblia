@@ -4,16 +4,16 @@ import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { layoutReel } from "../../src/reels/layout";
-import { applyOverrides, isStyleId, STYLES, type StyleOverrides } from "../../src/reels/styles";
-import type { RenderProgress } from "../../src/reels/types";
-import { isAllowedMusicUrl, resolveLocalTrackPath } from "./music";
-import { narrationText } from "./narrationText";
-import { isAllowedVideoUrl } from "./providers";
-import { rasterizeLayers } from "./rasterize";
-import type { VideoRenderService } from "./render";
-import { serverMeasurer } from "./serverFonts";
-import { clampRate, resolveNarration } from "./tts";
+import { layoutReel } from "../../src/reels/layout.js";
+import { applyOverrides, isStyleId, STYLES, type StyleOverrides } from "../../src/reels/styles.js";
+import type { RenderProgress } from "../../src/reels/types.js";
+import { isAllowedMusicUrl, resolveLocalTrackPath } from "./music/index.js";
+import { narrationText } from "./narrationText.js";
+import { isAllowedVideoUrl } from "./providers/index.js";
+import { rasterizeLayers } from "./rasterize.js";
+import type { VideoRenderService } from "./render/index.js";
+import { serverMeasurer } from "./serverFonts.js";
+import { clampRate, resolveNarration } from "./tts/index.js";
 
 // ─── ReelGeneratorService ─────────────────────────────────────────────────────
 // Orquestra o fluxo inteiro. Não sabe nada sobre HTTP nem sobre qual FFmpeg

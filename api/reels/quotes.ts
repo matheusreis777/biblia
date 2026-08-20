@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { isThemeId } from "../../src/reels/themes";
-import { resolveQuotes, toQuoteLanguage } from "../../server/reels/quotes";
+import { isThemeId } from "../../src/reels/themes.js";
+import { resolveQuotes, toQuoteLanguage } from "../../server/reels/quotes/index.js";
 
 // ─── GET /api/reels/quotes ────────────────────────────────────────────────────
 // Frases motivacionais de um tema. Mesma forma de /api/reels/videos.

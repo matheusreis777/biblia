@@ -3,9 +3,9 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { TIMING, ZOOM_AMOUNT } from "../../../src/reels/timing";
-import type { RenderProgress } from "../../../src/reels/types";
-import type { EncodeProfile, RenderJob } from "./types";
+import { TIMING, ZOOM_AMOUNT } from "../../../src/reels/timing.js";
+import type { RenderProgress } from "../../../src/reels/types.js";
+import type { EncodeProfile, RenderJob } from "./types.js";
 
 // ─── Pipeline FFmpeg ──────────────────────────────────────────────────────────
 // Compartilhada pelas duas implementações de VideoRenderService: só o caminho

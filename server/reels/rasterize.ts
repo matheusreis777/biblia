@@ -1,8 +1,8 @@
 import { Resvg } from "@resvg/resvg-js";
 
-import { renderLayers } from "../../src/reels/svg";
-import type { LayoutResult } from "../../src/reels/types";
-import { fontFilePaths } from "./serverFonts";
+import { renderLayers } from "../../src/reels/svg.js";
+import type { LayoutResult } from "../../src/reels/types.js";
+import { fontFilePaths } from "./serverFonts.js";
 
 // ─── Rasterização ─────────────────────────────────────────────────────────────
 // Converte as camadas SVG em PNGs RGBA que o FFmpeg sobrepõe ao vídeo.

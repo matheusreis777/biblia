@@ -1,4 +1,4 @@
-import type { ReelVideo } from "../../../src/reels/types";
+import type { ReelVideo } from "../../../src/reels/types.js";
 
 // ─── Contrato dos provedores de vídeo ─────────────────────────────────────────
 // Adicionar um provedor novo = implementar esta interface e incluí-lo no array

@@ -5,7 +5,7 @@ import {
   type MusicProvider,
   type MusicSearchOptions,
   type MusicTrack,
-} from "./types";
+} from "./types.js";
 
 // ─── Pasta local ──────────────────────────────────────────────────────────────
 // Último elo da cadeia: os arquivos que estiverem em public/music/.

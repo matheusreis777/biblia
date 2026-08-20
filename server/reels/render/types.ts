@@ -1,5 +1,5 @@
-import type { RenderProgress } from "../../../src/reels/types";
-import type { RasterizedLayers } from "../rasterize";
+import type { RenderProgress } from "../../../src/reels/types.js";
+import type { RasterizedLayers } from "../rasterize.js";
 
 // ─── Contrato do render ───────────────────────────────────────────────────────
 // Duas implementações hoje: o FFmpeg do sistema (local, sem limite de tempo) e
