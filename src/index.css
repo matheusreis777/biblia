@@ -3,6 +3,27 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
+/* ─── Fontes do gerador de Reels ─────────────────────────────────────────────
+ * Cada peso é uma família própria, com o mesmo nome gravado no name table do
+ * .ttf (ver scripts/prepare-fonts.py e src/reels/fonts.ts). Isso é o que
+ * permite ao resvg, no servidor, escolher o peso certo sem ambiguidade.
+ *
+ * São os MESMOS arquivos que o servidor lê para medir e rasterizar o texto —
+ * por isso o preview quebra as linhas exatamente onde o MP4 vai quebrar. Não
+ * troque por webfonts do Google aqui: as métricas divergem.
+ *
+ * Carregam sob demanda (só a página /reels usa estas famílias).
+ */
+@font-face { font-family: "ReelInter400";        src: url("/fonts/Inter-Regular.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "ReelInter500";        src: url("/fonts/Inter-Medium.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "ReelInter600";        src: url("/fonts/Inter-SemiBold.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "ReelSpaceGrotesk500"; src: url("/fonts/SpaceGrotesk-Medium.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "ReelSpaceGrotesk700"; src: url("/fonts/SpaceGrotesk-Bold.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "ReelCormorant500";    src: url("/fonts/CormorantGaramond-Medium.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "ReelCormorant600";    src: url("/fonts/CormorantGaramond-SemiBold.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "ReelPlayfair500";     src: url("/fonts/PlayfairDisplay-Medium.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "ReelPlayfair600";     src: url("/fonts/PlayfairDisplay-SemiBold.ttf") format("truetype"); font-display: block; }
+
 @layer base {
   :root {
     --background: 0 0% 5.1%;
@@ -64,6 +85,28 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* ─── Animações do preview de Reel ───────────────────────────────────────────
+ * Espelham os filtros de fade do FFmpeg. Os tempos vêm de src/reels/timing.ts,
+ * aplicados inline pelo componente — aqui ficam só as curvas.
+ */
+@keyframes reel-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes reel-fade-up {
+  from { opacity: 0; transform: translateY(var(--reel-rise, 22px)); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reel-fade {
+  animation: reel-fade both cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reel-fade-up {
+  animation: reel-fade-up both cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 /* Subtle ambient light shift on sections */

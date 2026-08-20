@@ -1,7 +1,32 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
   ],
+  "functions": {
+    "api/reels/music.ts": {
+      "maxDuration": 30
+    },
+    "api/reels/narration.ts": {
+      "maxDuration": 60
+    },
+    "api/reels/quotes.ts": {
+      "maxDuration": 30
+    },
+    "api/reels/render.ts": {
+      "maxDuration": 300,
+      "includeFiles": "public/fonts/**"
+    },
+    "api/reels/videos.ts": {
+      "maxDuration": 30
+    },
+    "api/reels/voices.ts": {
+      "maxDuration": 15
+    }
+  },
   "crons": [
     {
       "path": "/api/daily-verse",

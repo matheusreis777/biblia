@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Variáveis de ambiente (.env.local já cai em *.local, mas seja explícito)
+.env
+.env.*
+!.env.example
+
+# Faixas de trilha: locais e pessoais, mas o README da pasta fica versionado
+public/music/*
+!public/music/README.md

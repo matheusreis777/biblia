@@ -22,5 +22,21 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts"]
+  // As funções serverless e os scripts de build rodam em Node, não no browser.
+  // Ficavam fora do `tsc -b`; agora entram, porque o gerador de Reels põe
+  // lógica de verdade no servidor (providers, rasterização, FFmpeg).
+  //
+  // api/ tem SÓ as rotas; a biblioteca que elas usam vive em server/. A Vercel
+  // transforma cada arquivo de api/ numa função, e um módulo compartilhado ali
+  // dentro viraria uma rota quebrada — por isso a separação.
+  //
+  // Os módulos de src/reels/ são deliberadamente compartilhados com o projeto
+  // do browser: são TS puro e precisam compilar nos dois ambientes.
+  "include": [
+    "vite.config.ts",
+    "vite/**/*.ts",
+    "api/**/*.ts",
+    "server/**/*.ts",
+    "scripts/**/*.ts"
+  ]
 }

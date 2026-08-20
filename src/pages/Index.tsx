@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   BookOpen, ChevronLeft, ChevronRight, Search, X,
-  AlignJustify, Hash, Globe
+  AlignJustify, Hash, Globe, Film
 } from "lucide-react";
 import { BIBLE_BOOKS, AT_BOOKS, NT_BOOKS, type BibleBook } from "@/data/bibleBooks";
 import { useTranslation } from "react-i18next";
@@ -286,6 +286,17 @@ export default function BibliaPage() {
               {currentBook.name} {currentChapter}
             </span>
           </div>
+
+          <Link
+            to="/reels"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border hover:border-primary/40 hover:bg-primary/5 transition-all group"
+            title={t("reels.title")}
+          >
+            <Film size={14} className="text-muted-foreground group-hover:text-primary transition-colors" />
+            <span className="text-[10px] uppercase tracking-widest font-bold text-foreground/70 group-hover:text-primary hidden sm:block">
+              {t("bible.reels_link")}
+            </span>
+          </Link>
 
           <button
             onClick={() => setShowSearch(true)}
