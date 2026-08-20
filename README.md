@@ -192,8 +192,11 @@ Environment Variables.
 
 JSON não aceita comentários, então o que está lá está explicado aqui:
 
-- **`api/reels/render.ts` → `maxDuration: 300`** — um Reel de 15s em 1080x1920 não cabe
-  nos 60s do plano Hobby. **Esse valor exige o plano Pro.** No Hobby a rota vai estourar
+- **`api/reels/render.ts` → `maxDuration: 60`** — valor conservador, válido em Hobby e
+  em Pro. Um Reel de 15s em 1080x1920 leva ~40s localmente e é mais lento na função, então
+  60s é apertado: se a rota estourar o tempo no site publicado, **suba para 300 (exige
+  plano Pro)**. Não deixe 300 numa conta Hobby — o build inteiro falha, e nem a Bíblia sobe.
+  Antes, no Hobby a rota vai estourar
   o tempo; o render local continua funcionando normalmente.
 - **`api/reels/render.ts` → `includeFiles: "public/fonts/**"`** — `public/` é saída
   estática e não entra no bundle da função. Sem isso, o servidor não acha as fontes

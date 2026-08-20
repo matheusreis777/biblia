@@ -17,7 +17,7 @@
       "maxDuration": 30
     },
     "api/reels/render.ts": {
-      "maxDuration": 300,
+      "maxDuration": 60,
       "includeFiles": "public/fonts/**"
     },
     "api/reels/videos.ts": {
