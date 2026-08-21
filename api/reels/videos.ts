@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { isThemeId } from "../../src/reels/themes.js";
 import { MIN_DURATION_SEC } from "../../server/reels/providers/types.js";
-import { resolveVideos } from "../../server/reels/providers/index.js";
+import { configuredProviders, resolveVideos } from "../../server/reels/providers/index.js";
 
 // ─── GET /api/reels/videos ────────────────────────────────────────────────────
 // Busca clipes verticais para um tema. As chaves das APIs ficam só aqui, no
@@ -49,7 +49,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({
       theme: rawTheme,
       videos: result.videos,
+      /** Quem efetivamente devolveu clipes nesta busca. */
       providers: result.usedProviders,
+      /**
+       * Quem TEM chave configurada neste ambiente.
+       *
+       * Sem isto, "pexels" ausente de `providers` era ambíguo: podia ser chave
+       * faltando ou chamada com erro. Só IDs de provedor — nenhum valor de
+       * chave é exposto.
+       */
+      configured: configuredProviders(),
     });
   } catch (err) {
     console.error("reels/videos error:", err);

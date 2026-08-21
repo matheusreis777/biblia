@@ -70,10 +70,23 @@ export class PexelsVideoProvider implements VideoProvider {
   readonly id = "pexels";
   readonly label = "Pexels";
 
-  private readonly apiKey: string | undefined;
+  private readonly override: string | undefined;
 
-  constructor(apiKey = process.env.PEXELS_API_KEY) {
-    this.apiKey = apiKey;
+  /** O parâmetro existe para testes; em produção a chave vem do ambiente. */
+  constructor(apiKey?: string) {
+    this.override = apiKey;
+  }
+
+  /**
+   * Lida a cada uso, não no construtor.
+   *
+   * A lista de PROVIDERS é montada quando o módulo carrega, e ler o ambiente
+   * ali congela o valor daquele instante. Se a variável só ficar disponível
+   * depois — ou se o módulo for avaliado num contexto sem ela —, o provedor
+   * ficaria permanentemente indisponível mesmo com a chave configurada.
+   */
+  private get apiKey(): string | undefined {
+    return this.override ?? process.env.PEXELS_API_KEY;
   }
 
   isAvailable(): boolean {

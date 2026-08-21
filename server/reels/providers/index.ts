@@ -21,6 +21,11 @@ export const PROVIDERS: VideoProvider[] = [
 /** Quantos clipes bons já bastam para não consultar o próximo provedor. */
 const ENOUGH_RESULTS = 6;
 
+/** Provedores com configuração suficiente para serem usados agora. */
+export function configuredProviders(): string[] {
+  return PROVIDERS.filter((p) => p.isAvailable()).map((p) => p.id);
+}
+
 export interface ResolveResult {
   videos: ReelVideo[];
   /** Provedores que efetivamente contribuíram, na ordem em que foram usados. */
