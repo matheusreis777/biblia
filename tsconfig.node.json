@@ -37,6 +37,9 @@
     "vite/**/*.ts",
     "api/**/*.ts",
     "server/**/*.ts",
+    // O nucleo compartilhado ja entra por importacao, mas o .d.ts ambiente de
+    // src/reels/ nao e importado por ninguem — precisa ser listado.
+    "src/reels/**/*.ts",
     "scripts/**/*.ts"
   ]
 }

@@ -1,5 +1,3 @@
-// @ts-expect-error O pacote não publica tipos para o caminho ESM; os tipos
-// reais vêm de @types/opentype.js, aplicados na reexportação abaixo.
 import { parse as parseEsm } from "opentype.js/dist/opentype.mjs";
 import type { Font } from "opentype.js";
 
