@@ -203,8 +203,16 @@ export class InternalVideoProvider implements VideoProvider {
     const matching = theme ? CLIPS.filter((c) => c.theme === theme) : [];
     const rest = CLIPS.filter((c) => !matching.includes(c));
 
-    return [...matching, ...rest]
-      .filter((c) => c.durationSec >= options.minDurationSec)
-      .slice(0, options.limit);
+    const pool = [...matching, ...rest].filter(
+      (c) => c.durationSec >= options.minDurationSec,
+    );
+    if (pool.length === 0) return [];
+
+    // O acervo tem uma dúzia de clipes, bem menos que uma página cheia. Paginar
+    // cortando o fim deixaria o "Ver outros" sem efeito — foi o que acontecia.
+    // Rotacionar faz o botão circular pela biblioteca em vez de repetir sempre
+    // os mesmos primeiros itens.
+    const offset = (Math.max(0, options.page - 1) * options.limit) % pool.length;
+    return [...pool.slice(offset), ...pool.slice(0, offset)].slice(0, options.limit);
   }
 }
