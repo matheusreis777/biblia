@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { AlertTriangle, Check, Loader2, Mic, MicOff, Music } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Chip, FieldLabel, Slider, Toggle } from "./ui";
+import { Chip, FieldLabel, Slider, Toggle } from "@/components/ui/Field";
 import type { MusicState, MusicTrack, Mood } from "./useMusic";
 import { MOODS } from "./useMusic";
 import type { NarrationState, ReelVoice, VoicesState } from "./useNarration";

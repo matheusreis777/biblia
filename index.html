@@ -1,10 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0d" />
     <title>Bíblia Online</title>
+    <!--
+      Aplica o tema antes da primeira pintura. Sem isto, o React só resolveria a
+      preferência depois de montar e a página piscaria clara antes de escurecer.
+      É a única lógica de tema que precisa rodar fora do React; o resto vive em
+      src/theme/ThemeProvider.tsx, que lê a mesma chave.
+    -->
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem("biblia.theme") || "system";
+          var dark =
+            mode === "dark" ||
+            (mode !== "light" &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.classList.toggle("dark", dark);
+          document.documentElement.style.colorScheme = dark ? "dark" : "light";
+        } catch (e) {
+          /* localStorage bloqueado (modo privado): segue no tema claro. */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

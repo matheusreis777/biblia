@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Search, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FieldLabel } from "./ui";
+import { FieldLabel } from "@/components/ui/Field";
 
 // ─── Passo 1: o versículo ─────────────────────────────────────────────────────
 // Três caminhos, como pedido: versículo do dia, busca por referência, ou texto

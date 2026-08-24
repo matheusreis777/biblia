@@ -22,13 +22,16 @@ npm run dev
 
 ```
 src/            aplicação no browser
-  pages/        Index (leitor bíblico) e Reels (gerador)
+  pages/        Index (leitor bíblico), Reels (gerador) e AuthCallback (volta do Google)
   components/   componentes da página de Reels
   reels/        NÚCLEO COMPARTILHADO — TS puro, roda no browser e no servidor
+  auth/         sessão do Supabase e dados do leitor (última leitura, favoritos)
+  lib/          cliente do Supabase, tipos do banco e persistência local
   data/         os 66 livros
   i18n/         pt-BR e en-US
 api/            SÓ as rotas serverless (cada arquivo vira uma função na Vercel)
 server/         biblioteca usada pelas rotas
+supabase/       migrações SQL já aplicadas no projeto
   reels/tts/    motores de voz (Edge, Windows) e a cadeia de fallback
   reels/music/  trilha de fundo (hoje só a pasta local)
 vite/           plugin que serve /api/* em desenvolvimento
@@ -222,19 +225,75 @@ Se a conta for **Pro**, subir `maxDuration` para 300 em `vercel.json` permite de
 perfil serverless para perto do local — é só ajustar `SERVERLESS_PROFILE` em
 `server/reels/render/types.ts`.
 
+## Conta e sincronização
+
+Login **opcional**, só com Google, via Supabase Auth. Quem não entra lê a Bíblia
+normalmente e tem a última leitura guardada no `localStorage`; quem entra ganha a mesma
+informação na nuvem, sincronizada entre dispositivos.
+
+O que a conta guarda — uma tabela para cada coisa, todas com RLS ligado e políticas que
+só deixam a pessoa ver e escrever as próprias linhas:
+
+| Tabela | Conteúdo |
+|---|---|
+| `profiles` | Nome, e-mail, foto e idioma preferido. Criada por trigger no primeiro login. |
+| `reading_progress` | Uma linha por usuário com o último livro e capítulo abertos. |
+| `favorite_verses` | Versículos marcados com a estrela. |
+
+**O RLS sozinho não basta neste projeto.** Ele foi criado com a política "RLS-first" do
+Supabase, que não concede privilégios de tabela automaticamente: sem o `GRANT ... TO
+authenticated` da migração `20260821191609`, o PostgREST devolve `42501 permission
+denied` antes mesmo de avaliar as políticas. Toda tabela nova precisa dos dois.
+
+### Como o estado é resolvido
+
+`src/auth/` tem dois provedores, nesta ordem:
+
+- **`AuthProvider`** — restaura a sessão do `localStorage` no carregamento
+  (`persistSession` + `autoRefreshToken`), o que mantém a pessoa logada entre visitas, e
+  expõe `signInWithGoogle` / `signOut`.
+- **`UserDataProvider`** — dona da última leitura, dos favoritos e do idioma. Sem sessão
+  trabalha só com o `localStorage`. Ao entrar, mescla os dois lados: na última leitura
+  vence o `updated_at` mais recente; nos favoritos vale a união dos dois conjuntos, e o
+  que só existia no navegador sobe para a nuvem.
+
+O flag `ready` do `UserDataProvider` é o que evita a pegadinha mais fácil deste fluxo:
+gravar Gênesis 1 (o capítulo padrão) por cima do progresso real antes de a nuvem
+responder. A página só restaura e só grava depois que ele vira `true`.
+
+### O que precisa estar configurado no painel do Supabase
+
+- **Authentication → Providers → Google**: habilitado, com o Client ID e o Client Secret
+  do Google Cloud. No Google Cloud, a *Authorized redirect URI* é a do Supabase:
+  `https://<projeto>.supabase.co/auth/v1/callback`.
+- **Authentication → URL Configuration → Redirect URLs**: precisa listar o callback da
+  app em cada ambiente, senão a volta do Google cai no *Site URL* em vez da rota certa:
+  `http://localhost:5173/auth/callback` e `https://<seu-domínio>/auth/callback`.
+- **Authentication → Providers → Email**: pode ser desligado. A interface não oferece
+  mais senha, mas enquanto o provedor estiver ligado ainda dá para criar conta chamando a
+  API direto.
+- Opcional: *Leaked Password Protection* — irrelevante enquanto só houver Google.
+
 ## Configuração
 
 ### Variáveis de ambiente
 
-Só no servidor, nunca com prefixo `VITE_` (o Vite embutiria a chave no bundle do
-browser). Em desenvolvimento saem do `.env.local`; na Vercel, de Project Settings →
-Environment Variables.
+As chaves de API dos Reels ficam **só no servidor**, nunca com prefixo `VITE_` (o Vite
+embutiria a chave no bundle do browser). As duas do Supabase são a exceção: elas são
+públicas por natureza e o navegador precisa delas. Em desenvolvimento saem do
+`.env.local`; na Vercel, de Project Settings → Environment Variables.
 
 | Variável | Para quê |
 |---|---|
 | `PEXELS_API_KEY` | Provedor principal de vídeos. Gratuita, 200 req/h. |
 | `PIXABAY_API_KEY` | Fallback de vídeo do Pexels. Gratuita. Opcional. |
 | `FFMPEG_PATH` | Caminho do FFmpeg quando não está no PATH. Só afeta o render local. |
+| `VITE_SUPABASE_URL` | URL do projeto Supabase. Pública. |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Publishable key (`sb_publishable_…`). Pública: quem protege os dados é o RLS. |
+
+Sem as duas do Supabase o site continua funcionando — o botão de entrar simplesmente não
+aparece e a última leitura fica só no navegador. Nunca coloque aqui a `service_role`
+key: ela ignora o RLS e não pode chegar ao cliente.
 
 ### `vercel.json`
 
