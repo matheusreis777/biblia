@@ -4,7 +4,7 @@ import { AlertCircle, Check, ExternalLink, Quote as QuoteIcon } from "lucide-rea
 import { cn } from "@/lib/utils";
 import { THEMES } from "@/reels/themes";
 import type { ThemeId } from "@/reels/types";
-import { Chip, FieldLabel } from "./ui";
+import { Chip, FieldLabel } from "@/components/ui/Field";
 import type { Quote, QuotesState } from "./useQuotes";
 import type { Verse } from "./VerseStep";
 

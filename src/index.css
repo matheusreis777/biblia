@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap');
 
 @import "tailwindcss";
 @config "../tailwind.config.ts";
@@ -24,46 +24,100 @@
 @font-face { font-family: "ReelPlayfair500";     src: url("/fonts/PlayfairDisplay-Medium.ttf") format("truetype"); font-display: block; }
 @font-face { font-family: "ReelPlayfair600";     src: url("/fonts/PlayfairDisplay-SemiBold.ttf") format("truetype"); font-display: block; }
 
+/* ─── Tokens ─────────────────────────────────────────────────────────────────
+ * :root é o tema CLARO; .dark é o ESCURO. A classe entra no <html> antes da
+ * primeira pintura (script no index.html) e depois é mantida pelo
+ * ThemeProvider — ver src/theme/ThemeProvider.tsx.
+ *
+ * As duas paletas foram escolhidas separadamente, não invertidas uma da outra:
+ * o claro é levemente quente (branco puro cansa em leitura longa) e usa um
+ * verde mais fechado para passar contraste; o escuro mantém a identidade
+ * preta/verde do site e inverte o texto do botão primário, porque texto branco
+ * sobre o verde claro não chegava a 4.5:1.
+ */
 @layer base {
   :root {
-    --background: 0 0% 5.1%;
-    --foreground: 0 0% 87.8%;
+    color-scheme: light;
 
-    --card: 0 0% 10.2%;
-    --card-foreground: 0 0% 87.8%;
+    --background: 40 30% 98%;
+    --foreground: 24 10% 15%;
 
-    --popover: 0 0% 10.2%;
-    --popover-foreground: 0 0% 87.8%;
+    --card: 0 0% 100%;
+    --card-foreground: 24 10% 15%;
 
-    --primary: 142 70% 45%;
-    --primary-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 24 10% 15%;
 
-    --secondary: 0 0% 10.2%;
-    --secondary-foreground: 0 0% 87.8%;
+    --primary: 142 64% 30%;
+    --primary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 53.3%;
+    --secondary: 40 18% 95%;
+    --secondary-foreground: 24 10% 20%;
 
-    --accent: 142 70% 45%;
-    --accent-foreground: 0 0% 98%;
+    --muted: 40 16% 93%;
+    --muted-foreground: 28 6% 42%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    /* Superfície de realce (hover de linha, item ativo de menu). */
+    --accent: 40 20% 91%;
+    --accent-foreground: 24 10% 15%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 142 70% 45%;
+    --destructive: 0 70% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 36 14% 88%;
+    --input: 36 14% 88%;
+    --ring: 142 64% 30%;
+
+    /* Banda de seleção do versículo — mais quieta que a primária. */
+    --highlight: 142 38% 93%;
+
+    --shadow-color: 30 24% 22%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 5.1%;
-    --sidebar-foreground: 0 0% 87.8%;
-    --sidebar-primary: 142 70% 45%;
-    --sidebar-primary-foreground: 0 0% 5.1%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 87.8%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 142 70% 45%;
+    /* Preferências de leitura (useReaderSettings escreve por cima no <html>).
+       A família é variável porque o leitor pode alternar serifa/sem serifa, e
+       o versículo a consome direto — nenhum componente precisa saber disso. */
+    --reading-size: 1.0625rem;
+    --reading-leading: 1.75;
+    --reading-family: "Source Serif 4", Georgia, serif;
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --background: 0 0% 5.1%;
+    --foreground: 0 0% 89%;
+
+    --card: 0 0% 9%;
+    --card-foreground: 0 0% 89%;
+
+    --popover: 0 0% 11%;
+    --popover-foreground: 0 0% 89%;
+
+    --primary: 142 70% 45%;
+    /* Texto escuro sobre o verde: branco sobre #22c55e fica em 2.3:1. */
+    --primary-foreground: 140 40% 6%;
+
+    --secondary: 0 0% 13%;
+    --secondary-foreground: 0 0% 89%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 58%;
+
+    --accent: 0 0% 16%;
+    --accent-foreground: 0 0% 92%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 17%;
+    --input: 0 0% 17%;
+    --ring: 142 70% 45%;
+
+    --highlight: 142 34% 13%;
+
+    --shadow-color: 0 0% 0%;
   }
 }
 
@@ -72,18 +126,65 @@
     @apply border-border;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* Reserva a calha da barra de rolagem para overlays não deslocarem a
+       página ao travar a rolagem do body. */
+    scrollbar-gutter: stable;
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
+    /* O flash cinza do toque atrapalha em alvos grandes como a linha do
+       versículo — o feedback fica por conta dos estados :active do CSS. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+  }
+
+  /* Um anel só, igual em tudo que recebe foco por teclado. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background rounded-sm;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.22);
+  }
+}
+
+/* ─── Troca de tema ──────────────────────────────────────────────────────────
+ * A transição é ligada só durante o swap (o provider põe e tira a classe em
+ * ~180ms). Deixá-la permanente faria cada hover e cada seleção de versículo
+ * animar cor, o que atrasa a resposta da leitura.
+ */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: background-color 180ms ease, border-color 180ms ease,
+    color 180ms ease, fill 180ms ease, stroke 180ms ease !important;
+  transition-delay: 0ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition: none !important;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Largura de linha confortável para texto corrido. */
+  .measure {
+    max-width: 40rem;
   }
 }
 
@@ -108,37 +209,3 @@
 .reel-fade-up {
   animation: reel-fade-up both cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-
-/* Subtle ambient light shift on sections */
-.section-glow {
-  position: relative;
-  overflow-x: hidden;
-}
-
-.section-glow::before {
-  content: '';
-  position: absolute;
-  top: -200px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 400px;
-  background: radial-gradient(ellipse, hsl(142 70% 45% / 0.03) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Skill hover effect */
-.skill-item {
-  transition: opacity 0.2s ease, color 0.2s ease;
-}
-
-.skill-group:hover .skill-item {
-  opacity: 0.4;
-}
-
-.skill-group:hover .skill-item:hover {
-  opacity: 1;
-  color: hsl(142, 70%, 45%);
-}
-

@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
-  AlertTriangle, BookOpen, Download, Film, Globe, Loader2, Ruler, RotateCcw, Sparkles,
+  ArrowLeft, AudioLines, BookOpen, CheckCircle2, Film, Palette, Ruler, Star, Type,
 } from "lucide-react";
 
 import {
@@ -11,8 +11,10 @@ import {
   type NarrationSettings,
 } from "@/components/reels/AudioStep";
 import { ContentStep, type ContentType } from "@/components/reels/ContentStep";
-import { PhonePreview } from "@/components/reels/PhonePreview";
-import { RenderProgress } from "@/components/reels/RenderProgress";
+import { ReelsGenerateButton, type ReelsWarning } from "@/components/reels/ReelsGenerateButton";
+import { ReelsPreview } from "@/components/reels/ReelsPreview";
+import { ReelsStudio, type StudioSection } from "@/components/reels/ReelsStudio";
+import { ReelsSummary } from "@/components/reels/ReelsSummary";
 import { StyleStep } from "@/components/reels/StyleStep";
 import { ThemeStep } from "@/components/reels/ThemeStep";
 import { useMusic } from "@/components/reels/useMusic";
@@ -22,19 +24,24 @@ import { useReelMeasurer } from "@/components/reels/useReelMeasurer";
 import { useReelRender } from "@/components/reels/useReelRender";
 import type { Verse } from "@/components/reels/VerseStep";
 import { VideoGallery } from "@/components/reels/VideoGallery";
-import { Step, Toggle } from "@/components/reels/ui";
+import { AppHeader } from "@/components/layout/AppHeader";
+import { AppShell } from "@/components/layout/AppShell";
+import { Toggle } from "@/components/ui/Field";
 import { layoutReel } from "@/reels/layout";
 import { applyOverrides, STYLES, type StyleOverrides } from "@/reels/styles";
 import { detectTheme } from "@/reels/themes";
 import { TIMING } from "@/reels/timing";
 import type { LayoutResult, ReelVideo, StyleId, ThemeId } from "@/reels/types";
 
-// ─── Gerador de Reels ─────────────────────────────────────────────────────────
-// Fluxo: versículo → tema → vídeo → estilo → gerar.
+// ─── Estúdio de Reels ─────────────────────────────────────────────────────────
+// Fluxo: conteúdo → tema → vídeo → texto → áudio → finalização.
 //
-// O preview à direita não é ilustrativo: renderiza o mesmo LayoutResult que o
-// servidor rasteriza para dentro do vídeo, com as mesmas fontes e coordenadas.
-// Ver src/components/reels/PhonePreview.tsx.
+// O preview não é ilustrativo: renderiza o mesmo LayoutResult que o servidor
+// rasteriza para dentro do vídeo, com as mesmas fontes e coordenadas. Ver
+// src/components/reels/PhonePreview.tsx.
+//
+// Esta página é só estado e composição. O arranjo visual — duas colunas no
+// desktop, preview fixo no topo com abas no mobile — mora em ReelsStudio.
 
 /** Assinatura do rodapé, por tipo de conteúdo. */
 const DEFAULT_BRANDING: Record<ContentType, string> = {
@@ -47,6 +54,7 @@ const DEFAULT_DURATION_SEC = 15;
 
 export default function ReelsPage() {
   const { t, i18n } = useTranslation();
+  const [searchParams] = useSearchParams();
 
   const [contentType, setContentType] = useState<ContentType>("verse");
   // A assinatura acompanha o tipo de conteúdo, mas uma edição manual vence e
@@ -55,7 +63,16 @@ export default function ReelsPage() {
   // cascata.
   const [brandingEdit, setBrandingEdit] = useState<string | null>(null);
   const [siteText, setSiteText] = useState(DEFAULT_SITE);
-  const [verse, setVerse] = useState<Verse | null>(null);
+
+  // Versículo vindo do leitor ("Criar Reel" na barra de ações do versículo).
+  // Semeia o estado INICIAL em vez de entrar por efeito: assim o
+  // `startedWithContent` do VerseStep enxerga que já há conteúdo e não busca o
+  // versículo do dia por cima do que a pessoa acabou de escolher.
+  const [verse, setVerse] = useState<Verse | null>(() => {
+    const text = searchParams.get("text");
+    return text ? { text, reference: searchParams.get("ref") ?? "" } : null;
+  });
+
   const [video, setVideo] = useState<ReelVideo | null>(null);
   const [styleId, setStyleId] = useState<StyleId>("classic");
   const [overrides, setOverrides] = useState<StyleOverrides>({});
@@ -83,7 +100,7 @@ export default function ReelsPage() {
   const { state: render, start, reset } = useReelRender();
   const voices = useVoices();
   const music = useMusic(musicSettings.mood, musicSettings.enabled);
-  const selectedTrack = music.tracks.find((t) => t.id === musicSettings.trackId) ?? null;
+  const selectedTrack = music.tracks.find((tr) => tr.id === musicSettings.trackId) ?? null;
 
   // ── Tema ────────────────────────────────────────────────────────────────
   // O papel do tema INVERTE entre os dois modos:
@@ -229,247 +246,227 @@ export default function ReelsPage() {
   // entrada do texto como ela vai aparecer no vídeo.
   const animationKey = `${styleId}-${JSON.stringify(overrides)}-${verse?.text ?? ""}-${video?.id ?? ""}`;
 
+  // ── Avisos ──────────────────────────────────────────────────────────────
+  // Reunidos aqui e entregues ao botão de gerar: é junto do botão que eles
+  // importam. Avisar que a narração vai ser cortada no alto da página, longe da
+  // ação, não muda a decisão de ninguém.
+  const warnings: ReelsWarning[] = [];
+  if (fontError) warnings.push({ message: t("reels.font_error", { message: fontError }) });
+  if (tooLong) warnings.push({ message: t("reels.warning_too_long") });
+  if (narrationOverflowSec > 0) {
+    // A narração seria cortada pelo `-t` do FFmpeg. Avisa e sugere a duração
+    // necessária, mas não bloqueia a geração.
+    const target = Math.min(30, Math.ceil(narrationEndsAt ?? durationSec));
+    warnings.push({
+      message: t("reels.warning_narration_overflow", {
+        seconds: narrationOverflowSec.toFixed(1),
+      }),
+      fix: {
+        label: t("reels.warning_narration_fix", { seconds: target }),
+        onClick: () => setDurationSec(target),
+      },
+    });
+  }
+
+  // ── Seções ──────────────────────────────────────────────────────────────
+  const locked = !verse;
+
+  const sections: StudioSection[] = [
+    {
+      id: "content",
+      label: t("reels.step_content"),
+      hint: t("reels.step_content_hint"),
+      icon: BookOpen,
+      node: (
+        <ContentStep
+          contentType={contentType}
+          onContentTypeChange={setContentType}
+          content={verse}
+          onContentChange={setVerse}
+          quotes={quotes}
+          theme={theme}
+          onThemeChange={selectTheme}
+        />
+      ),
+    },
+    {
+      id: "theme",
+      label: t("reels.step_theme"),
+      hint: t("reels.step_theme_hint"),
+      icon: Palette,
+      disabled: locked,
+      node: (
+        <ThemeStep
+          selected={theme}
+          detected={contentType === "verse" ? detectedTheme : null}
+          onSelect={selectTheme}
+        />
+      ),
+    },
+    {
+      id: "video",
+      label: t("reels.step_video"),
+      hint: t("reels.step_video_hint"),
+      icon: Film,
+      disabled: locked,
+      node: <VideoGallery theme={theme} selected={video} onSelect={selectVideo} />,
+    },
+    {
+      id: "style",
+      label: t("reels.step_style"),
+      hint: t("reels.step_style_hint"),
+      icon: Type,
+      disabled: locked,
+      node: (
+        <StyleStep
+          styleId={styleId}
+          overrides={overrides}
+          durationSec={durationSec}
+          onStyle={changeStyle}
+          onOverrides={patchOverrides}
+          onDuration={setDurationSec}
+          brandingText={brandingText}
+          onBranding={setBrandingEdit}
+          siteText={siteText}
+          onSite={setSiteText}
+        />
+      ),
+    },
+    {
+      id: "audio",
+      label: t("reels.step_audio"),
+      hint: t("reels.step_audio_hint"),
+      icon: AudioLines,
+      disabled: locked,
+      node: (
+        <AudioStep
+          settings={{ ...narrationSettings, voiceId: effectiveVoiceId }}
+          onChange={patchNarration}
+          voices={voices}
+          narration={narration}
+          language={i18n.language}
+          music={music}
+          musicSettings={musicSettings}
+          onMusicChange={patchMusic}
+        />
+      ),
+    },
+    {
+      id: "review",
+      label: t("reels.step_review"),
+      hint: t("reels.step_review_hint"),
+      icon: CheckCircle2,
+      disabled: locked,
+      node: (
+        <ReelsSummary
+          reference={verse?.reference ?? ""}
+          verseText={verse?.text ?? ""}
+          theme={theme}
+          styleId={styleId}
+          videoAuthor={video?.author.name ?? null}
+          narrationEnabled={narrationSettings.enabled}
+          voiceLabel={voices.voices.find((v) => v.id === effectiveVoiceId)?.label ?? null}
+          musicLabel={musicSettings.enabled ? (selectedTrack?.title ?? null) : null}
+          durationSec={durationSec}
+        />
+      ),
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-background text-foreground font-body">
-      {/* ── Topbar ────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-border">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-3">
-          <Link
-            to="/"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all group shrink-0"
-            title={t("reels.back_to_bible")}
-          >
-            <BookOpen size={15} className="text-muted-foreground group-hover:text-primary transition-colors" />
-            <span className="text-[10px] font-heading font-bold text-foreground/80 tracking-widest hidden xs:block uppercase">
-              {t("reels.back_to_bible")}
-            </span>
-          </Link>
-
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            <Film size={16} className="text-primary shrink-0" />
-            <span className="text-xs font-heading font-bold uppercase tracking-wider truncate">
+    <AppShell
+      // O rodapé sai daqui: no mobile a barra fixa de gerar ocupa o fim da tela,
+      // e no desktop o crédito competiria com a coluna do preview.
+      footer={false}
+      header={
+        <AppHeader
+          containerClassName="max-w-6xl"
+          mobileTitle={t("reels.title")}
+          mobileLead={
+            <Link
+              to="/"
+              aria-label={t("reels.back_to_bible")}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              <ArrowLeft size={20} />
+            </Link>
+          }
+          nav={
+            <span className="font-heading text-sm font-semibold text-muted-foreground">
               {t("reels.title")}
             </span>
-          </div>
+          }
+          links={[
+            { to: "/", label: t("reels.back_to_bible"), icon: BookOpen },
+            { to: "/favoritos", label: t("favorites.title"), icon: Star },
+          ]}
+        />
+      }
+    >
+      <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:py-8">
+        <header className="mb-8 hidden lg:block">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight">{t("reels.title")}</h1>
+          <p className="mt-2 max-w-2xl font-body text-sm leading-relaxed text-muted-foreground">
+            {t("reels.subtitle")}
+          </p>
+        </header>
 
-          <button
-            onClick={() => i18n.changeLanguage(i18n.language.startsWith("pt") ? "en-US" : "pt-BR")}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border hover:border-primary/40 hover:bg-primary/5 transition-all group shrink-0"
-          >
-            <Globe size={14} className="text-muted-foreground group-hover:text-primary transition-colors" />
-            <span className="text-[10px] uppercase tracking-widest font-bold text-foreground/70 group-hover:text-primary">
-              {i18n.language.startsWith("pt") ? "EN" : "PT"}
-            </span>
-          </button>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-4 py-8 pb-24">
-        {/* ── Cabeçalho ─────────────────────────────────────────────── */}
-        <div className="flex items-start gap-3 mb-8">
-          <div className="p-2.5 rounded-xl bg-primary/10 shrink-0">
-            <Sparkles size={20} className="text-primary" />
-          </div>
-          <div>
-            <h1 className="text-xl sm:text-2xl font-heading font-semibold tracking-tight">
-              {t("reels.title")}
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground font-body max-w-2xl leading-relaxed">
-              {t("reels.subtitle")}
-            </p>
-          </div>
-        </div>
-
-        {fontError && (
-          <div className="mb-6 flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3">
-            <AlertTriangle size={14} className="text-destructive shrink-0 mt-0.5" />
-            <p className="text-xs text-destructive font-body">
-              {t("reels.font_error", { message: fontError })}
-            </p>
-          </div>
-        )}
-
-        <div className="grid lg:grid-cols-[minmax(0,1fr)_320px] gap-6 items-start">
-          {/* ── Passos ──────────────────────────────────────────────── */}
-          <div className="space-y-4 min-w-0">
-            <Step index={1} title={t("reels.step_content")} hint={t("reels.step_content_hint")}>
-              <ContentStep
-                contentType={contentType}
-                onContentTypeChange={setContentType}
-                content={verse}
-                onContentChange={setVerse}
-                quotes={quotes}
-                theme={theme}
-                onThemeChange={selectTheme}
-              />
-            </Step>
-
-            <Step index={2} title={t("reels.step_theme")} hint={t("reels.step_theme_hint")} disabled={!verse}>
-              <ThemeStep
-                selected={theme}
-                detected={contentType === "verse" ? detectedTheme : null}
-                onSelect={selectTheme}
-              />
-            </Step>
-
-            <Step index={3} title={t("reels.step_video")} hint={t("reels.step_video_hint")} disabled={!verse}>
-              <VideoGallery theme={theme} selected={video} onSelect={selectVideo} />
-            </Step>
-
-            <Step index={4} title={t("reels.step_style")} hint={t("reels.step_style_hint")} disabled={!verse}>
-              <StyleStep
-                styleId={styleId}
-                overrides={overrides}
-                durationSec={durationSec}
-                onStyle={changeStyle}
-                onOverrides={patchOverrides}
-                onDuration={setDurationSec}
-                brandingText={brandingText}
-                onBranding={setBrandingEdit}
-                siteText={siteText}
-                onSite={setSiteText}
-              />
-            </Step>
-
-            <Step index={5} title={t("reels.step_audio")} hint={t("reels.step_audio_hint")} disabled={!verse}>
-              <AudioStep
-                settings={{ ...narrationSettings, voiceId: effectiveVoiceId }}
-                onChange={patchNarration}
-                voices={voices}
-                narration={narration}
-                language={i18n.language}
-                music={music}
-                musicSettings={musicSettings}
-                onMusicChange={patchMusic}
-              />
-            </Step>
-          </div>
-
-          {/* ── Preview e geração ───────────────────────────────────── */}
-          <aside className="lg:sticky lg:top-20 space-y-4">
-            <div className="flex justify-center">
-              {layout ? (
-                <PhonePreview
-                  layout={layout}
-                  videoUrl={video?.previewUrl ?? null}
-                  posterUrl={video?.thumbUrl ?? null}
-                  width={288}
-                  animationKey={animationKey}
-                  showSafeArea={showSafeArea}
-                  narrationUrl={narration.url}
-                  soundOn={soundOn}
-                  onToggleSound={setSoundOn}
+        <ReelsStudio
+          sections={sections}
+          preview={(boxClassName) => (
+            <ReelsPreview
+              className={boxClassName}
+              layout={layout}
+              videoUrl={video?.previewUrl ?? null}
+              posterUrl={video?.thumbUrl ?? null}
+              animationKey={animationKey}
+              showSafeArea={showSafeArea}
+              narrationUrl={narration.url}
+              soundOn={soundOn}
+              onToggleSound={setSoundOn}
+            />
+          )}
+          aside={
+            <>
+              <div className="flex items-center justify-center gap-2">
+                <Ruler size={12} className="text-muted-foreground" />
+                <Toggle
+                  checked={showSafeArea}
+                  onChange={setShowSafeArea}
+                  label={t("reels.show_safe_area")}
                 />
-              ) : (
-                <div className="w-72 aspect-[9/16] rounded-[2rem] border border-border bg-card flex items-center justify-center">
-                  <Loader2 size={20} className="animate-spin text-muted-foreground" />
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center justify-center gap-2">
-              <Ruler size={12} className="text-muted-foreground" />
-              <Toggle
-                checked={showSafeArea}
-                onChange={setShowSafeArea}
-                label={t("reels.show_safe_area")}
-              />
-            </div>
-
-            {tooLong && (
-              <div className="flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2.5">
-                <AlertTriangle size={13} className="text-destructive shrink-0 mt-0.5" />
-                <p className="text-[11px] text-destructive font-body leading-snug">
-                  {t("reels.warning_too_long")}
-                </p>
               </div>
-            )}
 
-            {/* A narração seria cortada pelo `-t` do FFmpeg. Avisa e sugere a
-                duração necessária, mas não bloqueia a geração. */}
-            {narrationOverflowSec > 0 && (
-              <div className="flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2.5">
-                <AlertTriangle size={13} className="text-destructive shrink-0 mt-0.5" />
-                <div className="space-y-1.5">
-                  <p className="text-[11px] text-destructive font-body leading-snug">
-                    {t("reels.warning_narration_overflow", {
-                      seconds: narrationOverflowSec.toFixed(1),
-                    })}
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setDurationSec(Math.min(30, Math.ceil(narrationEndsAt ?? durationSec)))
-                    }
-                    className="text-[11px] font-heading font-bold uppercase tracking-wider text-primary hover:opacity-80 transition-opacity"
+              {video && (
+                <p className="text-center font-body text-[10px] text-muted-foreground">
+                  {t("reels.video_credit")}{" "}
+                  <a
+                    href={video.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-foreground/70 underline underline-offset-2 transition-colors hover:text-primary"
                   >
-                    {t("reels.warning_narration_fix", {
-                      seconds: Math.min(30, Math.ceil(narrationEndsAt ?? durationSec)),
-                    })}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <RenderProgress
-              state={render}
+                    {video.author.name}
+                  </a>
+                </p>
+              )}
+            </>
+          }
+          generate={(compact) => (
+            <ReelsGenerateButton
+              render={render}
+              canGenerate={canGenerate}
+              onGenerate={generate}
+              onReset={reset}
+              downloadName={downloadName}
               withNarration={narrationSettings.enabled}
               withMusic={musicSettings.enabled && selectedTrack !== null}
+              warnings={warnings}
+              compact={compact}
             />
-
-            {render.phase === "done" && render.url ? (
-              <div className="space-y-2">
-                <a
-                  href={render.url}
-                  download={downloadName}
-                  className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-primary text-primary-foreground rounded-xl text-sm font-heading font-bold hover:opacity-90 transition-opacity active:scale-95"
-                >
-                  <Download size={16} />
-                  {t("reels.download", {
-                    size: ((render.bytes ?? 0) / 1024 / 1024).toFixed(1),
-                  })}
-                </a>
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl border border-border text-xs font-heading font-bold text-foreground/80 hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-all active:scale-95"
-                >
-                  <RotateCcw size={13} />
-                  {t("reels.generate_again")}
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={generate}
-                disabled={!canGenerate}
-                className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-primary text-primary-foreground rounded-xl text-sm font-heading font-bold hover:opacity-90 transition-opacity active:scale-95 disabled:opacity-25 disabled:cursor-not-allowed"
-              >
-                {render.phase === "running" ? (
-                  <Loader2 size={16} className="animate-spin" />
-                ) : (
-                  <Film size={16} />
-                )}
-                {render.phase === "running" ? t("reels.generating") : t("reels.generate")}
-              </button>
-            )}
-
-            {video && (
-              <p className="text-[10px] text-center text-muted-foreground font-body">
-                {t("reels.video_credit")}{" "}
-                <a
-                  href={video.sourceUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-foreground/70 hover:text-primary transition-colors underline underline-offset-2"
-                >
-                  {video.author.name}
-                </a>
-              </p>
-            )}
-          </aside>
-        </div>
-      </main>
-    </div>
+          )}
+        />
+      </div>
+    </AppShell>
   );
 }

@@ -1,8 +1,11 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
+  // Os tokens claros vivem em :root e os escuros em .dark — a classe é posta no
+  // <html> pelo script anti-flash do index.html e mantida pelo ThemeProvider.
   darkMode: "class",
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: ["./index.html", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -14,9 +17,17 @@ export default {
       },
     },
     extend: {
+      // Fica em `extend.screens`, não em `container.screens`: aquele configura
+      // só o utilitário .container e nunca gerou a variante `xs:`.
+      screens: {
+        xs: "400px",
+      },
       fontFamily: {
         heading: ['"Space Grotesk"', 'monospace'],
         body: ['"Inter"', 'sans-serif'],
+        // Serifa de tela para o texto bíblico. Independente das famílias
+        // `Reel*`, que são arquivos .ttf medidos pelo servidor.
+        reading: ['"Source Serif 4"', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -52,41 +63,31 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
+        /** Banda de seleção do versículo — não é `primary`, é mais quieta. */
+        highlight: "hsl(var(--highlight))",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        // Sombras próprias: as do Tailwind são calibradas para fundo claro e
+        // somem no tema escuro. Estas usam a variável, que muda por tema.
+        soft: "0 1px 2px hsl(var(--shadow-color) / 0.04), 0 4px 12px hsl(var(--shadow-color) / 0.06)",
+        lift: "0 2px 4px hsl(var(--shadow-color) / 0.06), 0 12px 32px hsl(var(--shadow-color) / 0.12)",
+        overlay: "0 8px 16px hsl(var(--shadow-color) / 0.12), 0 24px 64px hsl(var(--shadow-color) / 0.24)",
+      },
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
+        // Varredura do skeleton de carregamento.
         shimmer: {
           "100%": { transform: "translateX(100%)" },
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        shimmer: "shimmer 2s infinite",
+        shimmer: "shimmer 1.6s infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

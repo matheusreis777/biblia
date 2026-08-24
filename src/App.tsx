@@ -1,7 +1,12 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "@/i18n/config";
+import { AuthProvider } from "@/auth/AuthProvider";
+import { UserDataProvider } from "@/auth/UserDataProvider";
+import { ThemeProvider } from "@/theme/ThemeProvider";
 import Index from "./pages/Index.tsx";
+import Favorites from "./pages/Favorites.tsx";
+import AuthCallback from "./pages/AuthCallback.tsx";
 import "./index.css";
 
 // O gerador de Reels carrega sob demanda: ele traz o opentype.js junto
@@ -9,29 +14,40 @@ import "./index.css";
 const Reels = lazy(() => import("./pages/Reels.tsx"));
 
 const PageFallback = () => (
-  <div className="min-h-screen bg-background flex items-center justify-center">
+  <div className="min-h-svh bg-background flex items-center justify-center">
     <div className="w-8 h-8 rounded-full border-2 border-border border-t-primary animate-spin" />
   </div>
 );
 
 const App = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Index />} />
-      {/* Antes de /:bookId — senão a rota dinâmica capturaria "reels". */}
-      <Route
-        path="/reels"
-        element={
-          <Suspense fallback={<PageFallback />}>
-            <Reels />
-          </Suspense>
-        }
-      />
-      <Route path="/:bookId" element={<Index />} />
-      <Route path="/:bookId/:chapter" element={<Index />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  </BrowserRouter>
+  <ThemeProvider>
+    <AuthProvider>
+      <UserDataProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            {/* Rotas fixas antes de /:bookId — senão a dinâmica as capturaria. */}
+            <Route
+              path="/reels"
+              element={
+                <Suspense fallback={<PageFallback />}>
+                  <Reels />
+                </Suspense>
+              }
+            />
+            <Route path="/favoritos" element={<Favorites />} />
+            {/* Mesma página pela grafia em inglês, para links não quebrarem. */}
+            <Route path="/favorites" element={<Navigate to="/favoritos" replace />} />
+            {/* Volta do consentimento do Google, via Supabase. */}
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/:bookId" element={<Index />} />
+            <Route path="/:bookId/:chapter" element={<Index />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </UserDataProvider>
+    </AuthProvider>
+  </ThemeProvider>
 );
 
 export default App;

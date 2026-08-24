@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { FONT_FAMILIES } from "@/reels/fonts";
 import { STYLE_ORDER, STYLES, type StyleOverrides } from "@/reels/styles";
 import type { FontId, ScrimKind, StyleId, TextAnchor } from "@/reels/types";
-import { Chip, FieldLabel, Slider, Toggle } from "./ui";
+import { Chip, FieldLabel, Slider, Toggle } from "@/components/ui/Field";
 
 // ─── Passo 4: estilo e personalização ─────────────────────────────────────────
 // Os quatro presets definem uma composição inteira; os controles abaixo ajustam
