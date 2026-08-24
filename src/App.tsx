@@ -4,6 +4,7 @@ import "@/i18n/config";
 import { AuthProvider } from "@/auth/AuthProvider";
 import { UserDataProvider } from "@/auth/UserDataProvider";
 import { ThemeProvider } from "@/theme/ThemeProvider";
+import { UpdatePrompt } from "@/pwa/UpdatePrompt";
 import Index from "./pages/Index.tsx";
 import Favorites from "./pages/Favorites.tsx";
 import AuthCallback from "./pages/AuthCallback.tsx";
@@ -44,6 +45,8 @@ const App = () => (
             <Route path="/:bookId/:chapter" element={<Index />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          {/* Fora do <Routes>: o aviso de atualização vale em qualquer página. */}
+          <UpdatePrompt />
         </BrowserRouter>
       </UserDataProvider>
     </AuthProvider>

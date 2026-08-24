@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Service worker que o vite-plugin-pwa gera para o `npm run dev`
+dev-dist
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,10 +26,13 @@ dist-ssr
 *.sln
 *.sw?
 
-# Variáveis de ambiente (.env.local já cai em *.local, mas seja explícito)
+# Variáveis de ambiente: nada de env vai para o repositório
 .env
 .env.*
-!.env.example
+*.env
+env
+env.*
+.envrc
 
 # Faixas de trilha: locais e pessoais, mas o README da pasta fica versionado
 public/music/*

@@ -350,6 +350,14 @@
         "generic": "Não foi possível concluir. Tente novamente."
       }
     },
+    "pwa": {
+      "update_title": "Nova versão disponível",
+      "update_desc": "Atualize para carregar as últimas melhorias.",
+      "update_action": "Atualizar",
+      "later": "Agora não",
+      "offline_ready_title": "Pronto para usar offline",
+      "offline_ready_desc": "Os capítulos que você abrir ficam disponíveis mesmo sem internet."
+    },
     "common": {
       "close": "Fechar",
       "cancel": "Cancelar",

@@ -350,6 +350,14 @@
         "generic": "Couldn't complete that. Try again."
       }
     },
+    "pwa": {
+      "update_title": "New version available",
+      "update_desc": "Reload to get the latest improvements.",
+      "update_action": "Update",
+      "later": "Not now",
+      "offline_ready_title": "Ready to use offline",
+      "offline_ready_desc": "Chapters you open stay available even without a connection."
+    },
     "common": {
       "close": "Close",
       "cancel": "Cancel",
