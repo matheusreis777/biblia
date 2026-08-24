@@ -14,6 +14,25 @@ const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
  */
 export const isSupabaseConfigured = Boolean(url && publishableKey);
 
+// Sem as variáveis, toda a interface de conta simplesmente não é renderizada —
+// o que é o comportamento certo para o visitante, mas é indistinguível de um
+// bug para quem está publicando. Estas duas linhas transformam "o botão de
+// entrar sumiu" em uma resposta imediata no console.
+//
+// Vale lembrar que são variáveis VITE_: elas são embutidas no BUILD. Cadastrar
+// na Vercel depois do deploy não muda nada até um novo build rodar.
+if (!isSupabaseConfigured) {
+  const faltando = [
+    !url && "VITE_SUPABASE_URL",
+    !publishableKey && "VITE_SUPABASE_PUBLISHABLE_KEY",
+  ].filter(Boolean);
+  console.warn(
+    `[biblia] Login desativado: falta ${faltando.join(" e ")} no build. ` +
+      "A leitura e os favoritos seguem funcionando, guardados só neste navegador. " +
+      "Para ativar, cadastre as variáveis no ambiente e refaça o build.",
+  );
+}
+
 export const supabase: SupabaseClient<Database> | null = isSupabaseConfigured
   ? createClient<Database>(url!, publishableKey!, {
       auth: {

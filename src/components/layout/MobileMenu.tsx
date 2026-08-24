@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import { AccountButton } from "@/auth/AccountButton";
+import { useAuth } from "@/auth/AuthContext";
 import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { Sheet } from "@/components/ui/Sheet";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -72,6 +73,7 @@ export function MobileMenu({
   children?: ReactNode;
 }) {
   const { t } = useTranslation();
+  const { enabled: authEnabled } = useAuth();
 
   return (
     <Sheet open={open} onClose={onClose} side="bottom" title={t("shell.menu_title")}>
@@ -97,9 +99,13 @@ export function MobileMenu({
         </Section>
       </div>
 
-      <div className="border-t border-border px-3 py-3">
-        <AccountButton variant="inline" onNavigate={onClose} />
-      </div>
+      {/* Sem Supabase configurado o AccountButton devolve null, e sem esta
+          guarda sobrava um divisor com espaço em branco embaixo do menu. */}
+      {authEnabled && (
+        <div className="border-t border-border px-3 py-3">
+          <AccountButton variant="inline" onNavigate={onClose} />
+        </div>
+      )}
     </Sheet>
   );
 }
