@@ -2,15 +2,20 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <!--
+      Ícone da aba: sai de public/icon-biblia.png via `npm run icon-biblia`.
+      O favicon.svg não é declarado de propósito — o Chrome prefere SVG e
+      mostraria o logo antigo; ele segue só como fonte dos ícones do PWA.
+    -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0d0d0d" />
-    <title>Bíblia Online</title>
-    <meta
-      name="description"
-      content="Leia a Bíblia em português e inglês, salve versículos favoritos e gere Reels a partir deles."
-    />
+    <!--
+      <title>, descrição, canônica e Open Graph entram no marcador abaixo, por
+      rota, via vite/openGraph.ts. O texto de cada página fica em
+      src/lib/pageMeta.ts.
+    -->
+    <!-- open-graph -->
     <!--
       O <link rel="manifest"> é injetado pelo vite-plugin-pwa no build. O que
       sobra aqui é o que o iOS exige por conta própria: ele ignora o manifesto

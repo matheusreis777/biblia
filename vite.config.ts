@@ -3,6 +3,17 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import { VitePWA } from 'vite-plugin-pwa'
 import { reelsDevApi } from './vite/reelsDevApi'
+import { openGraph } from './vite/openGraph'
+
+// Origem absoluta da canônica e das tags Open Graph. Na Vercel é o domínio de
+// produção — inclusive nos previews, para que a canônica nunca aponte para um
+// deploy temporário.
+const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL
+if (process.env.VERCEL && !productionHost) {
+  // Sem ela as prévias de link sairiam apontando para localhost.
+  throw new Error('VERCEL_PROJECT_PRODUCTION_URL ausente: ative "Automatically expose System Environment Variables" no projeto')
+}
+const siteUrl = productionHost ? `https://${productionHost}` : 'http://localhost:5173'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,6 +24,7 @@ export default defineConfig({
   plugins: [
     react(),
     reelsDevApi(),
+    openGraph(siteUrl),
     // ─── PWA ─────────────────────────────────────────────────────────────────
     // Instalável e legível offline: o app shell fica pré-cacheado no build e os
     // capítulos já visitados ficam no cache de runtime. Os ícones do manifesto
@@ -68,7 +80,11 @@ export default defineConfig({
       workbox: {
         // Os .ttf de public/fonts/ ficam de fora de propósito: são ~4MB que só
         // a página /reels usa, e ela tem regra de runtime abaixo.
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
+        // Só o index.html da raiz: os ~1.250 HTMLs por rota de vite/openGraph.ts
+        // existem para crawlers, e o SW serve o index.html em toda navegação.
+        globPatterns: ['**/*.{js,css,ico,png,svg,webmanifest}', 'index.html'],
+        // Matéria-prima da og-image.jpg (~500KB): não é usada pelo app.
+        globIgnores: ['icon-biblia.png'],
         // Toda navegação cai no index.html (mesmo papel do rewrite do
         // vercel.json), menos /api — que é função serverless, não rota do app.
         navigateFallback: '/index.html',

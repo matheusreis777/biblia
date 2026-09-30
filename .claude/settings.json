@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Vercel__list_project_domains",
+      "Bash(node -e \"console.log\\(require\\('ffmpeg-static'\\)\\)\")",
+      "Bash(node scripts/generate-og-image.mjs)",
+      "Bash(sed -i 's/font-family=\"Space Grotesk\" font-weight=\"700\"/font-family=\"ReelSpaceGrotesk700\"/; s/font-family=\"Inter\"/font-family=\"ReelInter400\"/' scripts/generate-og-image.mjs)",
+      "Bash(sed -i 's|^  font: {|  // Os .ttf foram renomeados por scripts/prepare-fonts.py: a família é o nome\\\\n  // Reel* abaixo, não \"Inter\" ou \"Space Grotesk\".\\\\n  font: {|' scripts/generate-og-image.mjs)",
+      "Bash(VERCEL=1 VERCEL_PROJECT_PRODUCTION_URL=biblia.example.com npm run build)",
+      "Bash(rm scripts/generate-og-image.mjs)",
+      "Bash(sed -i 's|\"og-image\": \"node scripts/generate-og-image.mjs\"|\"icon-biblia\": \"node scripts/generate-icon-biblia.mjs\"|' package.json)",
+      "Bash(node scripts/generate-icon-biblia.mjs)"
+    ]
+  }
+}

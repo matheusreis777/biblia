@@ -23,6 +23,7 @@ na biblioteca interna de vídeos. Chaves e login são opcionais — ver
 | `npm run verify:api` | Confere que as funções de `api/` carregam no runtime da Vercel |
 | `npm run fonts` | Regera as fontes de `public/fonts/` (precisa de Python + fontTools) |
 | `npm run icons` | Regera os ícones do PWA a partir de `public/favicon.svg` |
+| `npm run icon-biblia` | Regera o ícone da aba (`favicon.ico`) e a prévia de links (`og-image.jpg`) a partir de `public/icon-biblia.png` |
 
 ## Documentação
 

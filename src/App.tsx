@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import "@/i18n/config";
 import { AuthProvider } from "@/auth/AuthProvider";
 import { UserDataProvider } from "@/auth/UserDataProvider";
@@ -8,6 +8,7 @@ import { UpdatePrompt } from "@/pwa/UpdatePrompt";
 import Index from "./pages/Index.tsx";
 import Favorites from "./pages/Favorites.tsx";
 import AuthCallback from "./pages/AuthCallback.tsx";
+import { pageMeta } from "@/lib/pageMeta";
 import "./index.css";
 
 // O gerador de Reels carrega sob demanda: ele traz o opentype.js junto
@@ -19,6 +20,16 @@ const PageFallback = () => (
     <div className="w-8 h-8 rounded-full border-2 border-border border-t-primary animate-spin" />
   </div>
 );
+
+// O HTML de cada rota já nasce com o <title> certo (vite/openGraph.ts); isto só
+// o acompanha nas navegações feitas dentro do SPA.
+const DocumentTitle = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    document.title = pageMeta(pathname).title;
+  }, [pathname]);
+  return null;
+};
 
 const App = () => (
   <ThemeProvider>
@@ -47,6 +58,7 @@ const App = () => (
           </Routes>
           {/* Fora do <Routes>: o aviso de atualização vale em qualquer página. */}
           <UpdatePrompt />
+          <DocumentTitle />
         </BrowserRouter>
       </UserDataProvider>
     </AuthProvider>
